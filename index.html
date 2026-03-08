@@ -858,8 +858,9 @@ bg-[url('./images/footer-bg-color.avif')] bg-no-repeat bg-[length:90%_auto] bg-c
 dark:bg-none">
 
     <h4 class="text-center mb-2 text-lg font-Ovo">Connect With Me 📞</h4>
+    
  <h2 class="text-center text-5xl font-Ovo">
-    <span id="typing-text"></span><span class="cursor">GET IN TOUCH </span>
+<span id="contact-typing"></span><span class="cursor">|</span>
 </h2>
 
     <p class="text-center max-w-2xl mx-auto mt-5 mb-12 font-Ovo">
@@ -914,7 +915,48 @@ dark:bg-none">
 
 
 
+<script>
 
+document.addEventListener("DOMContentLoaded", function(){
+
+const texts = [
+"Get In Touch",
+"Let's Build Something Amazing 🚀",
+"Let's Work Together 💻",
+"Let's Create Great Projects 🔥"
+];
+
+let count = 0;
+let index = 0;
+
+function typeEffect(){
+
+if(count === texts.length){
+count = 0;
+}
+
+let currentText = texts[count];
+let letter = currentText.slice(0, ++index);
+
+document.getElementById("contact-typing").textContent = letter;
+
+if(letter.length === currentText.length){
+count++;
+index = 0;
+setTimeout(typeEffect,1500);
+}else{
+setTimeout(typeEffect,80);
+}
+
+}
+
+typeEffect();
+
+});
+
+</script>
+
+    
 
 
 
