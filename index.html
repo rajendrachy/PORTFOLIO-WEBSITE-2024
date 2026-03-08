@@ -850,14 +850,16 @@ class="w-full max-w-4xl">
     
 
 
-<!-- -----------contact---------------- -->
+<!-- -----------CONTACT FORM---------------- -->
 
 <div id="contact" class="w-full px-[12%] py-10 scroll-mt-20 
 bg-[url('./images/footer-bg-color.avif')] bg-no-repeat bg-[length:90%_auto] bg-center
 dark:bg-none">
 
     <h4 class="text-center mb-2 text-lg font-Ovo">Connect With Me 📞</h4>
-    <h2 class="text-center text-5xl font-Ovo">Get In Touch</h2>
+   <h2 class="text-center text-5xl font-Ovo">
+<span id="typing-text"></span><span class="cursor">|</span>
+</h2>
 
     <p class="text-center max-w-2xl mx-auto mt-5 mb-12 font-Ovo">
         I'd love to hear from you! If you have any questions or feedback,
@@ -909,8 +911,44 @@ dark:bg-none">
     </form>
 </div>
 
+<script>
+
+const text = "Get In Touch";
+let i = 0;
+
+function typeEffect(){
+if(i < text.length){
+document.getElementById("typing-text").innerHTML += text.charAt(i);
+i++;
+setTimeout(typeEffect,100);
+}
+}
+
+typeEffect();
+
+</script>
+
+    <style>
+
+.cursor{
+animation: blink 1s infinite;
+}
+
+@keyframes blink{
+0%{opacity:1;}
+50%{opacity:0;}
+100%{opacity:1;}
+}
+
+</style>
 
 
+
+
+
+
+    
+    
 
     <!-- ----------- Social Links ---------------- -->
 
