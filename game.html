@@ -1,98 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tic Tac Toe Game</title>
-<script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe AI Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center min-h-screen">
 
-<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4">
+    <h1 class="text-4xl font-bold mb-6 text-center text-gray-800 dark:text-white">Tic Tac Toe 🧠 AI Game</h1>
 
-<div class="text-center w-full max-w-md">
+    <div id="status" class="text-xl mb-4 text-center text-gray-700 dark:text-gray-200">Your Turn! ✨</div>
 
-<h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">🎮 Tic Tac Toe</h1>
+    <div class="grid grid-cols-3 gap-4 w-64 sm:w-80">
+        <div class="cell bg-white dark:bg-gray-800 border-2 border-gray-400 dark:border-gray-600 aspect-square flex items-center justify-center text-4xl font-bold cursor-pointer"></div>
+        <div class="cell bg-white dark:bg-gray-800 border-2 border-gray-400 dark:border-gray-600 aspect-square flex items-center justify-center text-4xl font-bold cursor-pointer"></div>
+        <div class="cell bg-white dark:bg-gray-800 border-2 border-gray-400 dark:border-gray-600 aspect-square flex items-center justify-center text-4xl font-bold cursor-pointer"></div>
 
-<div id="board" class="grid grid-cols-3 gap-4">
+        <div class="cell bg-white dark:bg-gray-800 border-2 border-gray-400 dark:border-gray-600 aspect-square flex items-center justify-center text-4xl font-bold cursor-pointer"></div>
+        <div class="cell bg-white dark:bg-gray-800 border-2 border-gray-400 dark:border-gray-600 aspect-square flex items-center justify-center text-4xl font-bold cursor-pointer"></div>
+        <div class="cell bg-white dark:bg-gray-800 border-2 border-gray-400 dark:border-gray-600 aspect-square flex items-center justify-center text-4xl font-bold cursor-pointer"></div>
 
-<!-- 9 Cells -->
-<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
-<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
-<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
-<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
-<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
-<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
-<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
-<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
-<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
+        <div class="cell bg-white dark:bg-gray-800 border-2 border-gray-400 dark:border-gray-600 aspect-square flex items-center justify-center text-4xl font-bold cursor-pointer"></div>
+        <div class="cell bg-white dark:bg-gray-800 border-2 border-gray-400 dark:border-gray-600 aspect-square flex items-center justify-center text-4xl font-bold cursor-pointer"></div>
+        <div class="cell bg-white dark:bg-gray-800 border-2 border-gray-400 dark:border-gray-600 aspect-square flex items-center justify-center text-4xl font-bold cursor-pointer"></div>
+    </div>
 
-</div>
-
-<p id="status" class="mt-6 text-lg sm:text-xl md:text-2xl font-semibold"></p>
-
-<div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
-<button onclick="restartGame()" 
-class="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition duration-300">
-Restart Game
-</button>
-
-<a href="index.html"
-class="px-6 py-2 border rounded-lg hover:bg-gray-200 transition duration-300">
-⬅ Back to Portfolio
-</a>
-</div>
-
-</div>
+    <button onclick="restartGame()" class="mt-6 px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition">Restart Game</button>
 
 <script>
 const cells = document.querySelectorAll(".cell");
 const statusText = document.getElementById("status");
 
-let currentPlayer = "X";
 let gameActive = true;
-
+const human = "X";
+const ai = "O";
 const winConditions = [
-[0,1,2],[3,4,5],[6,7,8],
-[0,3,6],[1,4,7],[2,5,8],
-[0,4,8],[2,4,6]
+  [0,1,2],[3,4,5],[6,7,8],
+  [0,3,6],[1,4,7],[2,5,8],
+  [0,4,8],[2,4,6]
 ];
 
 cells.forEach((cell,index)=>{
-cell.addEventListener("click",()=>cellClicked(cell,index));
+  cell.addEventListener("click",()=>humanMove(cell,index));
 });
 
-function cellClicked(cell,index){
-if(cell.textContent !== "" || !gameActive) return;
-cell.textContent = currentPlayer;
-checkWinner();
-currentPlayer = currentPlayer === "X" ? "O" : "X";
+function humanMove(cell,index){
+  if(cell.textContent !== "" || !gameActive) return;
+  cell.textContent = human;
+  checkWinner();
+  if(gameActive){
+    statusText.textContent = "AI is thinking... 🤖";
+    setTimeout(aiMove, 2000); // AI moves after 2 seconds
+  }
+}
+
+function aiMove(){
+  let board = [...cells].map(c => c.textContent);
+  let bestScore = -Infinity;
+  let move = -1;
+  for(let i=0;i<board.length;i++){
+    if(board[i]===""){
+      board[i]=ai;
+      let score = minimax(board,false);
+      board[i]="";
+      if(score>bestScore){
+        bestScore=score;
+        move=i;
+      }
+    }
+  }
+  cells[move].textContent=ai;
+  checkWinner();
+  if(gameActive){
+    statusText.textContent = "Your Turn! ✨";
+  }
 }
 
 function checkWinner(){
-let board = [...cells].map(cell => cell.textContent);
-for(let condition of winConditions){
-let [a,b,c] = condition;
-if(board[a] && board[a] === board[b] && board[a] === board[c]){
-statusText.textContent = `Player ${board[a]} Wins 🎉`;
-gameActive = false;
-return;
+  let board = [...cells].map(c => c.textContent);
+  for(let condition of winConditions){
+    let [a,b,c]=condition;
+    if(board[a] && board[a]===board[b] && board[a]===board[c]){
+      statusText.textContent = `Player ${board[a]} Wins 🎉`;
+      gameActive=false;
+      return;
+    }
+  }
+  if(board.every(c=>c!="")){
+    statusText.textContent="Draw Game 🤝";
+    gameActive=false;
+  }
 }
-}
-if(board.every(cell => cell !== "")){
-statusText.textContent = "Draw Game 🤝";
-gameActive = false;
-}
+
+function minimax(board,isMaximizing){
+  for(let condition of winConditions){
+    let [a,b,c]=condition;
+    if(board[a] && board[a]===board[b] && board[a]===board[c]){
+      if(board[a]===ai) return 1;
+      if(board[a]===human) return -1;
+    }
+  }
+  if(board.every(c=>c!="")) return 0;
+
+  if(isMaximizing){
+    let bestScore=-Infinity;
+    for(let i=0;i<board.length;i++){
+      if(board[i]===""){
+        board[i]=ai;
+        let score=minimax(board,false);
+        board[i]="";
+        bestScore=Math.max(score,bestScore);
+      }
+    }
+    return bestScore;
+  }else{
+    let bestScore=Infinity;
+    for(let i=0;i<board.length;i++){
+      if(board[i]===""){
+        board[i]=human;
+        let score=minimax(board,true);
+        board[i]="";
+        bestScore=Math.min(score,bestScore);
+      }
+    }
+    return bestScore;
+  }
 }
 
 function restartGame(){
-cells.forEach(cell => cell.textContent="");
-currentPlayer = "X";
-gameActive = true;
-statusText.textContent = "";
+  cells.forEach(cell=>cell.textContent="");
+  gameActive=true;
+  statusText.textContent="Your Turn! ✨";
 }
 </script>
 
 </body>
 </html>
-
-
