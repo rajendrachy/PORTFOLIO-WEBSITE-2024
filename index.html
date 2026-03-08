@@ -13,6 +13,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     
 </head>
 
@@ -109,7 +110,28 @@ dark:text-white">
      class="w-48 h-48 rounded-full object-cover">
 <h3 class="flex items-end gap-2 text-xl md:text-2xl mb-3 font-Ovo">Hi! I'm Rajendra Chaudhary 👋<img src=".image/hand-icon.png" alt="" class="w-6"></h3>
 
-<h1 class="text-3xl sm:text-6xl lg:text-[66px] font-Ovo">Full Stack Web | Software Developer & DevOps Engineer </h1>
+
+    <h1 class="text-3xl sm:text-6xl lg:text-[66px] font-Ovo">
+<span id="typing-text"></span>
+</h1>
+
+
+    <script>
+var typed = new Typed("#typing-text", {
+  strings: [
+    "Full Stack Web Developer",
+    "Software Engineer",
+    "DevOps Engineer"
+  ],
+  typeSpeed: 70,
+  backSpeed: 40,
+  backDelay: 1500,
+  loop: true
+});
+</script>
+
+
+    
 <p class="max-w-2xl mx-auto font-Ovo">I am a Full Stack Web | Software Developer and DevOps Engineer from Nepal with -- years of experience, building scalable web applications and managing reliable deployment pipelines. I create user-friendly, high-performance websites while ensuring efficient infrastructure, automation, and smooth CI/CD processes
 </p>
 
