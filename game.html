@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe Game</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4">
+
+<div class="text-center w-full max-w-md">
+
+<h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">🎮 Tic Tac Toe</h1>
+
+<div id="board" class="grid grid-cols-3 gap-4">
+
+<!-- 9 Cells -->
+<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
+<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
+<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
+<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
+<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
+<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
+<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
+<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
+<button class="cell h-20 sm:h-24 md:h-28 bg-white border rounded-xl text-3xl font-bold"></button>
+
+</div>
+
+<p id="status" class="mt-6 text-lg sm:text-xl md:text-2xl font-semibold"></p>
+
+<div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+<button onclick="restartGame()" 
+class="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition duration-300">
+Restart Game
+</button>
+
+<a href="index.html"
+class="px-6 py-2 border rounded-lg hover:bg-gray-200 transition duration-300">
+⬅ Back to Portfolio
+</a>
+</div>
+
+</div>
+
+<script>
+const cells = document.querySelectorAll(".cell");
+const statusText = document.getElementById("status");
+
+let currentPlayer = "X";
+let gameActive = true;
+
+const winConditions = [
+[0,1,2],[3,4,5],[6,7,8],
+[0,3,6],[1,4,7],[2,5,8],
+[0,4,8],[2,4,6]
+];
+
+cells.forEach((cell,index)=>{
+cell.addEventListener("click",()=>cellClicked(cell,index));
+});
+
+function cellClicked(cell,index){
+if(cell.textContent !== "" || !gameActive) return;
+cell.textContent = currentPlayer;
+checkWinner();
+currentPlayer = currentPlayer === "X" ? "O" : "X";
+}
+
+function checkWinner(){
+let board = [...cells].map(cell => cell.textContent);
+for(let condition of winConditions){
+let [a,b,c] = condition;
+if(board[a] && board[a] === board[b] && board[a] === board[c]){
+statusText.textContent = `Player ${board[a]} Wins 🎉`;
+gameActive = false;
+return;
+}
+}
+if(board.every(cell => cell !== "")){
+statusText.textContent = "Draw Game 🤝";
+gameActive = false;
+}
+}
+
+function restartGame(){
+cells.forEach(cell => cell.textContent="");
+currentPlayer = "X";
+gameActive = true;
+statusText.textContent = "";
+}
+</script>
+
+</body>
+</html>
+
+
