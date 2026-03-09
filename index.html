@@ -169,9 +169,11 @@ message:text
 
 const data = await response.json()
 
+console.log("AI response:", data)   // 👈 IMPORTANT DEBUG
+
 loading.remove()
 
-addMessage("ai", data.reply)
+addMessage("ai", data.reply || "No response from AI")
 
 }
 
@@ -186,6 +188,8 @@ console.log(err)
 }
 
 }
+
+    
 
 /* ================= EVENTS ================= */
 
