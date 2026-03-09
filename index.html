@@ -28,109 +28,180 @@ dark:text-white">
 
 
 
-<!-- ================= Floating AI Chat Widget ================= -->
-<div id="floating-ai" class="fixed bottom-5 right-5 w-16 h-16 bg-purple-600 rounded-full shadow-lg flex items-center justify-center cursor-pointer z-50">
-    <img src="./robot-icon.png" alt="AI" class="w-8 h-8">
+
+
+
+<!-- ================= FLOATING AI CHAT ================= -->
+
+<!-- Floating Button -->
+<div id="floating-ai"
+class="fixed bottom-6 right-6 w-16 h-16 bg-purple-600 rounded-full shadow-xl flex items-center justify-center cursor-pointer z-50">
+
+<img src="./robot-icon.png" class="w-8 h-8">
+
 </div>
 
-<div id="ai-panel" class="fixed bottom-24 right-5 w-80 h-96 bg-white dark:bg-darkHover/80 border rounded-xl shadow-lg hidden flex-col z-50">
-    <div class="flex justify-between items-center p-3 border-b border-gray-300 dark:border-white/40">
-        <h3 class="font-Ovo text-lg">AI Assistant 🤖</h3>
-        <div class="flex items-center gap-2">
-            <button id="minimize-ai" class="text-gray-500 hover:text-gray-700 dark:text-white/70 dark:hover:text-white">_</button>
-            <button id="close-ai" class="text-gray-500 hover:text-gray-700 dark:text-white/70 dark:hover:text-white">&times;</button>
-        </div>
-    </div>
+<!-- AI Chat Panel -->
+<div id="ai-panel"
+class="fixed bottom-24 right-6 w-80 h-[420px] bg-white dark:bg-[#1e012c]
+border rounded-xl shadow-2xl flex flex-col z-50">
 
-    <div id="ai-messages" class="flex-1 p-3 overflow-y-auto space-y-2 bg-gray-50 dark:bg-[#2c0242]"></div>
+<!-- Header -->
+<div class="flex justify-between items-center p-3 border-b">
 
-    <div class="flex gap-2 p-3 border-t border-gray-300 dark:border-white/40">
-        <input id="ai-input" type="text" placeholder="Ask me..." class="flex-1 p-2 border rounded-md outline-none dark:bg-darkHover/30 dark:border-white/80">
-        <button id="ai-send" class="px-3 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">Send</button>
-    </div>
+<h3 class="font-semibold text-lg">AI Assistant 🤖</h3>
+
+<button id="close-ai"
+class="text-gray-500 hover:text-black text-xl">&times;</button>
+
 </div>
+
+<!-- Messages -->
+<div id="ai-messages"
+class="flex-1 overflow-y-auto p-3 space-y-3 bg-gray-50 dark:bg-[#2c0242]">
+
+<div class="bg-gray-200 dark:bg-white/20 px-3 py-2 rounded-lg inline-block">
+Hi 👋 I'm Rajendra's AI Assistant. Ask me anything about him!
+</div>
+
+</div>
+
+<!-- Input -->
+<div class="p-3 border-t flex gap-2">
+
+<input id="ai-input"
+type="text"
+placeholder="Ask me something..."
+class="flex-1 p-2 border rounded-md outline-none">
+
+<button id="ai-send"
+class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">
+
+Ask Me
+
+</button>
+
+</div>
+
+</div>
+
 
 <script>
-// Elements
-const floatingAI = document.getElementById('floating-ai');
-const aiPanel = document.getElementById('ai-panel');
-const closeBtn = document.getElementById('close-ai');
-const minimizeBtn = document.getElementById('minimize-ai');
-const input = document.getElementById('ai-input');
-const sendBtn = document.getElementById('ai-send');
-const messages = document.getElementById('ai-messages');
 
-// Show/Hide Panel
-floatingAI.addEventListener('click', () => {
-    aiPanel.classList.toggle('hidden');
-});
-closeBtn.addEventListener('click', () => aiPanel.classList.add('hidden'));
-minimizeBtn.addEventListener('click', () => aiPanel.classList.add('hidden'));
+/* ================= ELEMENTS ================= */
 
-// Add Message
-function addMessage(sender, text) {
-    const msg = document.createElement('div');
-    msg.className = sender === 'user' ? 'text-right' : 'text-left';
-    msg.innerHTML = `<span class='${sender==='user'?'bg-purple-100':'bg-gray-200 dark:bg-white/20'} inline-block px-3 py-2 rounded-xl'>${text}</span>`;
-    messages.appendChild(msg);
-    messages.scrollTop = messages.scrollHeight;
+const floatingAI = document.getElementById("floating-ai")
+const aiPanel = document.getElementById("ai-panel")
+const closeBtn = document.getElementById("close-ai")
+const sendBtn = document.getElementById("ai-send")
+const input = document.getElementById("ai-input")
+const messages = document.getElementById("ai-messages")
+
+/* ================= SHOW PANEL ================= */
+
+floatingAI.onclick = () => {
+aiPanel.classList.toggle("hidden")
 }
 
-// Send Message
-async function sendMessage() {
-    const text = input.value.trim();
-    if(!text) return;
-    addMessage('user', text);
-    input.value = '';
-
-    const loading = document.createElement('div');
-    loading.textContent = 'AI is typing...';
-    loading.className = 'text-gray-500 italic';
-    messages.appendChild(loading);
-    messages.scrollTop = messages.scrollHeight;
-
-    try {
-        const response = await fetch('http://localhost:3000/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text })
-        });
-
-        const data = await response.json();
-        loading.remove();
-        addMessage('ai', data.choices[0].message.content);
-    } catch (err) {
-        loading.remove();
-        addMessage('ai', 'Error! Could not get response.');
-        console.error(err);
-    }
+closeBtn.onclick = () => {
+aiPanel.classList.add("hidden")
 }
 
-sendBtn.addEventListener('click', sendMessage);
-input.addEventListener('keypress', e => { if(e.key==='Enter') sendMessage(); });
+/* ================= ADD MESSAGE ================= */
 
+function addMessage(sender, text){
 
-// ---------------- Draggable ----------------
-let isDragging = false;
-let offsetX, offsetY;
+const msg = document.createElement("div")
 
-floatingAI.addEventListener('mousedown', e => {
-    isDragging = true;
-    offsetX = e.clientX - floatingAI.getBoundingClientRect().left;
-    offsetY = e.clientY - floatingAI.getBoundingClientRect().top;
-});
+msg.className = sender === "user"
+? "text-right"
+: "text-left"
 
-window.addEventListener('mousemove', e => {
-    if(!isDragging) return;
-    floatingAI.style.left = (e.clientX - offsetX) + 'px';
-    floatingAI.style.top = (e.clientY - offsetY) + 'px';
-    floatingAI.style.bottom = 'auto';
-    floatingAI.style.right = 'auto';
-});
+msg.innerHTML = `
+<span class="${sender==="user"
+? "bg-purple-200"
+: "bg-gray-300 dark:bg-white/20"}
+inline-block px-3 py-2 rounded-xl">
+${text}
+</span>
+`
 
-window.addEventListener('mouseup', () => { isDragging = false; });
+messages.appendChild(msg)
+
+messages.scrollTop = messages.scrollHeight
+}
+
+/* ================= SEND MESSAGE ================= */
+
+async function sendMessage(){
+
+const text = input.value.trim()
+
+if(!text) return
+
+addMessage("user", text)
+
+input.value=""
+
+const loading = document.createElement("div")
+loading.innerText="AI typing..."
+loading.className="text-gray-500 italic"
+
+messages.appendChild(loading)
+
+messages.scrollTop = messages.scrollHeight
+
+try{
+
+const response = await fetch("https://YOUR-RENDER-URL.onrender.com/chat",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+message:text
+})
+
+})
+
+const data = await response.json()
+
+loading.remove()
+
+addMessage("ai", data.reply)
+
+}
+
+catch(err){
+
+loading.remove()
+
+addMessage("ai","Error getting response.")
+
+console.log(err)
+
+}
+
+}
+
+/* ================= EVENTS ================= */
+
+sendBtn.onclick = sendMessage
+
+input.addEventListener("keypress",(e)=>{
+
+if(e.key==="Enter"){
+sendMessage()
+}
+
+})
+
 </script>
 
+    
 
     
 
