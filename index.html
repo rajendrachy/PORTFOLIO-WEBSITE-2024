@@ -23,66 +23,71 @@ dark:text-white">
 
 
 
-// ai chat
+  
+       
 
-<input id="chatInput" placeholder="Ask something...">
-<button onclick="sendMessage()">Send</button>
 
-<div id="messages"></div>
+<!-- ================= AI CHAT WIDGET ================= -->
+<div id="ai-widget" class="w-full max-w-xl mx-auto my-10 p-5 border rounded-xl shadow-lg bg-white dark:bg-darkHover/50">
+  <h3 class="text-xl font-Ovo mb-4 text-center">Ask Me Anything 🤖</h3>
+  
+  <div id="ai-messages" class="h-64 overflow-y-auto mb-4 space-y-2 border border-gray-300 rounded p-3 bg-gray-50 dark:bg-[#2c0242]"></div>
+  
+  <div class="flex gap-2">
+    <input id="ai-input" type="text" placeholder="Type your question..." 
+           class="flex-1 p-3 border rounded-md outline-none dark:bg-darkHover/30 dark:border-white/80">
+    <button id="ai-send" class="px-4 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">Send</button>
+  </div>
+</div>
 
 <script>
-const widget = document.getElementById("ai-widget");
-const input = document.getElementById("ai-input");
-const sendBtn = document.getElementById("ai-send");
-const messages = document.getElementById("ai-messages");
+  const input = document.getElementById("ai-input");
+  const sendBtn = document.getElementById("ai-send");
+  const messages = document.getElementById("ai-messages");
 
-function addMessage(sender, text){
-    const msg = document.createElement("div");
-    msg.className = sender === "user" ? "text-right" : "text-left";
-    msg.innerHTML = `<span class="${sender==='user'?'bg-purple-100':'bg-gray-200'} inline-block px-3 py-2 rounded-xl">${text}</span>`;
-    messages.appendChild(msg);
-    messages.scrollTop = messages.scrollHeight;
-}
+  function addMessage(sender, text){
+      const msg = document.createElement("div");
+      msg.className = sender === "user" ? "text-right" : "text-left";
+      msg.innerHTML = `<span class="${sender==='user'?'bg-purple-100':'bg-gray-200 dark:bg-white/20'} inline-block px-3 py-2 rounded-xl">${text}</span>`;
+      messages.appendChild(msg);
+      messages.scrollTop = messages.scrollHeight;
+  }
 
-async function sendMessage() {
-    const text = input.value.trim();
-    if(!text) return;
-    addMessage("user", text);
-    input.value = "";
+  async function sendMessage() {
+      const text = input.value.trim();
+      if(!text) return;
+      addMessage("user", text);
+      input.value = "";
 
-    const loading = document.createElement("div");
-    loading.textContent = "AI is typing...";
-    loading.className = "text-gray-500 italic";
-    messages.appendChild(loading);
-    messages.scrollTop = messages.scrollHeight;
+      const loading = document.createElement("div");
+      loading.textContent = "AI is typing...";
+      loading.className = "text-gray-500 italic";
+      messages.appendChild(loading);
+      messages.scrollTop = messages.scrollHeight;
 
-    try {
-        // ✅ Call your local backend instead of OpenAI directly
-        const response = await fetch("http://localhost:3000/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: text })
-        });
+      try {
+          const response = await fetch("http://localhost:3000/chat", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ message: text })
+          });
 
-        const data = await response.json();
-        const reply = data.choices[0].message.content;
+          const data = await response.json();
+          loading.remove();
+          addMessage("ai", data.choices[0].message.content);
+      } catch(err) {
+          loading.remove();
+          addMessage("ai", "Error! Could not get response.");
+          console.error(err);
+      }
+  }
 
-        loading.remove();
-        addMessage("ai", reply);
-
-    } catch(err) {
-        loading.remove();
-        addMessage("ai", "Error! Could not get response.");
-        console.error(err);
-    }
-}
-
-sendBtn.addEventListener("click", sendMessage);
-input.addEventListener("keypress", e => { if(e.key === "Enter") sendMessage(); });
+  sendBtn.addEventListener("click", sendMessage);
+  input.addEventListener("keypress", e => { if(e.key === "Enter") sendMessage(); });
 </script>
 
 
-
+    
 
 
 
