@@ -21,6 +21,120 @@
 <body class="overflow-x-hidden font-Outfit leading-8 dark:bg-darkTheme 
 dark:text-white">
     
+
+
+<!-- Draggable AI Assistant -->
+<div id="ai-widget" class="fixed bottom-8 right-8 w-80 max-w-xs z-50 shadow-lg rounded-xl overflow-hidden"
+     style="background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); cursor: move;">
+
+    <!-- Header -->
+    <div id="ai-header" class="bg-purple-600 text-white p-3 flex justify-between items-center select-none">
+        <span>AI Assistant 🤖</span>
+        <button id="ai-close" class="text-xl font-bold">&times;</button>
+    </div>
+
+    <!-- Messages -->
+    <div id="ai-messages" class="p-3 h-96 overflow-y-auto flex flex-col gap-2"></div>
+
+    <!-- Input -->
+    <div class="p-3 border-t border-gray-300 flex gap-2">
+        <input id="ai-input" type="text" placeholder="Ask me about myself..."
+               class="flex-1 px-2 py-1 border rounded-md outline-none bg-white/70">
+        <button id="ai-send" class="bg-purple-600 text-white px-3 rounded-md hover:bg-purple-700">Send</button>
+    </div>
+</div>
+
+
+
+<script>
+const widget = document.getElementById("ai-widget");
+const header = document.getElementById("ai-header");
+const closeBtn = document.getElementById("ai-close");
+const messages = document.getElementById("ai-messages");
+const input = document.getElementById("ai-input");
+const sendBtn = document.getElementById("ai-send");
+
+// Close Widget
+closeBtn.addEventListener("click", () => widget.style.display = "none");
+
+// Drag functionality
+let isDragging = false, offsetX, offsetY;
+header.addEventListener("mousedown", e => {
+    isDragging = true;
+    offsetX = e.clientX - widget.getBoundingClientRect().left;
+    offsetY = e.clientY - widget.getBoundingClientRect().top;
+});
+document.addEventListener("mouseup", () => isDragging = false);
+document.addEventListener("mousemove", e => {
+    if (isDragging) {
+        widget.style.left = e.clientX - offsetX + "px";
+        widget.style.top = e.clientY - offsetY + "px";
+        widget.style.bottom = "auto";
+        widget.style.right = "auto";
+    }
+});
+
+// Add message
+function addMessage(sender, text){
+    const msg = document.createElement("div");
+    msg.className = sender === "user" ? "text-right" : "text-left";
+    msg.innerHTML = `<span class="${sender==='user'?'bg-purple-100':'bg-gray-200'} inline-block px-3 py-2 rounded-xl">${text}</span>`;
+    messages.appendChild(msg);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+// Send message
+async function sendMessage(){
+    const text = input.value.trim();
+    if(!text) return;
+    addMessage("user", text);
+    input.value = "";
+
+    const loading = document.createElement("div");
+    loading.textContent = "AI is typing...";
+    loading.className = "text-gray-500 italic";
+    messages.appendChild(loading);
+    messages.scrollTop = messages.scrollHeight;
+
+    try {
+        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer YOUR_OPENAI_API_KEY"
+            },
+            body: JSON.stringify({
+                model: "gpt-3.5-turbo",
+                messages:[
+                    {role:"system", content:"You are Rajendra Chaudhary's professional AI assistant. Answer about his skills, projects, education, and work professionally."},
+                    {role:"user", content:text}
+                ],
+                max_tokens:150
+            })
+        });
+        const data = await response.json();
+        const reply = data.choices[0].message.content;
+        loading.remove();
+        addMessage("ai", reply);
+    } catch(err) {
+        loading.remove();
+        addMessage("ai", "Error! Could not get response.");
+        console.error(err);
+    }
+}
+
+sendBtn.addEventListener("click", sendMessage);
+input.addEventListener("keypress", e=>{if(e.key==="Enter") sendMessage();});
+</script>
+
+
+
+
+
+
+
+
+
     <div class="fixed top-0 right-0 w-11/12 -z-10 translate-y-[-80%]
     dark:hidden">
      <img src="./IMAGES/headerbgcolor.png" alt="" class="w-full"> 
