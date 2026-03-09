@@ -23,6 +23,68 @@ dark:text-white">
 
 
 
+// ai chat
+
+<input id="chatInput" placeholder="Ask something...">
+<button onclick="sendMessage()">Send</button>
+
+<div id="messages"></div>
+
+<script>
+const widget = document.getElementById("ai-widget");
+const input = document.getElementById("ai-input");
+const sendBtn = document.getElementById("ai-send");
+const messages = document.getElementById("ai-messages");
+
+function addMessage(sender, text){
+    const msg = document.createElement("div");
+    msg.className = sender === "user" ? "text-right" : "text-left";
+    msg.innerHTML = `<span class="${sender==='user'?'bg-purple-100':'bg-gray-200'} inline-block px-3 py-2 rounded-xl">${text}</span>`;
+    messages.appendChild(msg);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+async function sendMessage() {
+    const text = input.value.trim();
+    if(!text) return;
+    addMessage("user", text);
+    input.value = "";
+
+    const loading = document.createElement("div");
+    loading.textContent = "AI is typing...";
+    loading.className = "text-gray-500 italic";
+    messages.appendChild(loading);
+    messages.scrollTop = messages.scrollHeight;
+
+    try {
+        // ✅ Call your local backend instead of OpenAI directly
+        const response = await fetch("http://localhost:3000/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: text })
+        });
+
+        const data = await response.json();
+        const reply = data.choices[0].message.content;
+
+        loading.remove();
+        addMessage("ai", reply);
+
+    } catch(err) {
+        loading.remove();
+        addMessage("ai", "Error! Could not get response.");
+        console.error(err);
+    }
+}
+
+sendBtn.addEventListener("click", sendMessage);
+input.addEventListener("keypress", e => { if(e.key === "Enter") sendMessage(); });
+</script>
+
+
+
+
+
 
 
 
