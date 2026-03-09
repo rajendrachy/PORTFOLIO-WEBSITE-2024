@@ -1,7 +1,6 @@
-// server.js (ES Module)
 import express from "express";
 import cors from "cors";
-import fetch from "node-fetch"; // only needed if Node < 18
+import fetch from "node-fetch"; // only if Node < 18
 import dotenv from "dotenv";
 dotenv.config();
 
