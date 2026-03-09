@@ -20,14 +20,13 @@ app.post("/chat", async (req, res) => {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           contents: [
             {
-              parts: [
-                { text: message }
-              ]
+              role: "user",
+              parts: [{ text: message }]
             }
           ]
         })
@@ -36,8 +35,10 @@ app.post("/chat", async (req, res) => {
 
     const data = await response.json();
 
+    console.log("Gemini response:", data);
+
     const reply =
-      data.candidates?.[0]?.content?.parts?.[0]?.text || "No response from AI";
+      data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response from AI";
 
     res.json({ reply });
 
@@ -47,6 +48,7 @@ app.post("/chat", async (req, res) => {
     res.status(500).json({ error: "AI request failed" });
 
   }
+
 });
 
 const PORT = process.env.PORT || 3000;
@@ -54,5 +56,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
 });
-
-
