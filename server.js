@@ -1,8 +1,9 @@
-// server.js
-const express = require("express");
-const cors = require("cors");
-const fetch = require("node-fetch"); // Only needed if Node < 18
-require("dotenv").config(); // Load .env
+// server.js (ES Module)
+import express from "express";
+import cors from "cors";
+import fetch from "node-fetch"; // only needed if Node < 18
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 app.use(cors());
@@ -45,5 +46,3 @@ app.post("/chat", async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
