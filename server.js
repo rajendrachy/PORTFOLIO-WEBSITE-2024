@@ -1,6 +1,8 @@
-import express from "express";
-import cors from "cors";
-import fetch from "node-fetch"; // use only if Node <18
+// server.js
+const express = require("express");
+const cors = require("cors");
+const fetch = require("node-fetch"); // Only needed if Node < 18
+require("dotenv").config(); // Load .env
 
 const app = express();
 app.use(cors());
@@ -8,7 +10,6 @@ app.use(express.json());
 
 app.post("/chat", async (req, res) => {
   const { message } = req.body;
-
   if (!message) return res.status(400).json({ error: "Message is required" });
 
   try {
@@ -16,16 +17,16 @@ app.post("/chat", async (req, res) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
           { role: "system", content: "You are Rajendra Chaudhary's AI assistant." },
-          { role: "user", content: message }
+          { role: "user", content: message },
         ],
-        max_tokens: 150
-      })
+        max_tokens: 150,
+      }),
     });
 
     if (!response.ok) {
@@ -35,7 +36,6 @@ app.post("/chat", async (req, res) => {
     }
 
     const data = await response.json();
-    // Send the AI's message directly to frontend
     res.json({ reply: data.choices[0].message.content });
   } catch (err) {
     console.error("Server Error:", err);
@@ -43,4 +43,5 @@ app.post("/chat", async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
