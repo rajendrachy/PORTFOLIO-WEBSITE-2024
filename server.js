@@ -9,10 +9,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("🚀 AI Backend Running");
-});
-
 app.post("/chat", async (req, res) => {
 
   const { message } = req.body;
@@ -24,15 +20,13 @@ app.post("/chat", async (req, res) => {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           contents: [
             {
               parts: [
-                {
-                  text: `You are Rajendra Chaudhary's AI assistant. ${message}`
-                }
+                { text: message }
               ]
             }
           ]
@@ -42,22 +36,23 @@ app.post("/chat", async (req, res) => {
 
     const data = await response.json();
 
-    const reply = data.candidates[0].content.parts[0].text;
+    const reply =
+      data.candidates?.[0]?.content?.parts?.[0]?.text || "No response from AI";
 
     res.json({ reply });
 
   } catch (error) {
 
-    console.log(error);
-
-    res.status(500).json({ error: "AI response failed" });
+    console.error(error);
+    res.status(500).json({ error: "AI request failed" });
 
   }
-
 });
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log("Server running on port", PORT);
+  console.log("Server running on port " + PORT);
 });
+
+
