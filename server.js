@@ -16,7 +16,7 @@ app.post("/chat", async (req, res) => {
   try {
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GOOGLE_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${process.env.GOOGLE_API_KEY}`,
       {
         method: "POST",
         headers: {
@@ -33,9 +33,9 @@ app.post("/chat", async (req, res) => {
       }
     );
 
-   const data = await response.json();
+    const data = await response.json();
 
-console.log("Gemini FULL response:", JSON.stringify(data, null, 2));
+    console.log("Gemini FULL response:", data);
 
     const reply =
       data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response from AI";
@@ -45,7 +45,10 @@ console.log("Gemini FULL response:", JSON.stringify(data, null, 2));
   } catch (error) {
 
     console.error(error);
-    res.status(500).json({ error: "AI request failed" });
+
+    res.status(500).json({
+      error: "AI request failed"
+    });
 
   }
 
@@ -56,3 +59,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
 });
+
