@@ -169,11 +169,15 @@ message:text
 
 const data = await response.json()
 
-console.log("AI response:", data)   // 👈 IMPORTANT DEBUG
+console.log("AI response:", data)
 
 loading.remove()
 
-addMessage("ai", data.reply || "No response from AI")
+if(data.reply){
+  addMessage("ai", data.reply)
+}else{
+  addMessage("ai","AI did not return a message.")
+}
 
 }
 
