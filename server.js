@@ -33,9 +33,9 @@ app.post("/chat", async (req, res) => {
       }
     );
 
-    const data = await response.json();
+   const data = await response.json();
 
-    console.log("Gemini response:", data);
+console.log("Gemini FULL response:", JSON.stringify(data, null, 2));
 
     const reply =
       data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response from AI";
