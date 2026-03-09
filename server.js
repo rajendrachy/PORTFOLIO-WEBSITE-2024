@@ -1,7 +1,6 @@
-// server.js
 import express from "express";
-import fetch from "node-fetch";
 import cors from "cors";
+import fetch from "node-fetch"; // use only if Node <18
 
 const app = express();
 app.use(cors());
@@ -10,12 +9,14 @@ app.use(express.json());
 app.post("/chat", async (req, res) => {
   const { message } = req.body;
 
+  if (!message) return res.status(400).json({ error: "Message is required" });
+
   try {
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer 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"
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
@@ -27,10 +28,18 @@ app.post("/chat", async (req, res) => {
       })
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("OpenAI API Error:", errorText);
+      return res.status(500).json({ error: "Failed to fetch from OpenAI" });
+    }
+
     const data = await response.json();
-    res.json(data);
+    // Send the AI's message directly to frontend
+    res.json({ reply: data.choices[0].message.content });
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch AI response" });
+    console.error("Server Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
