@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import fetch from "node-fetch"; // Add this at the top
+import fetch from "node-fetch";
 
 dotenv.config();
 
@@ -12,25 +12,43 @@ app.use(express.json());
 app.post("/chat", async (req, res) => {
   const { message } = req.body;
 
+  // check if message exists
+  if (!message) {
+    return res.status(400).json({ error: "Message is required" });
+  }
+
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5:generateText?key=${process.env.GOOGLE_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${process.env.GOOGLE_API_KEY}`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-          prompt: { text: message },
-          temperature: 0.7,
-          maxOutputTokens: 500
+          contents: [
+            {
+              parts: [{ text: message }]
+            }
+          ]
         })
       }
     );
 
+    // handle API error
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Gemini API Error:", errorText);
+      return res.status(500).json({ error: "Failed to fetch AI response" });
+    }
+
     const data = await response.json();
     console.log("Gemini FULL response:", data);
 
-    // Correct path to get the AI reply
-    const reply = data?.output?.[0]?.content?.[0]?.text || "No response from AI";
+    // correct response path
+    const reply =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "No response from AI";
 
     res.json({ reply });
 
@@ -41,5 +59,6 @@ app.post("/chat", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Server running on port " + PORT));
-
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
