@@ -7,23 +7,15 @@ dotenv.config();
 
 const app = express();
 
-// ✅ Middleware
 app.use(cors());
 app.use(express.json());
 
-// ✅ Debug ENV (optional but useful)
-console.log("API URL:", process.env.GEMINI_API_URL);
-console.log(
-  "API KEY:",
-  process.env.GOOGLE_API_KEY ? "Loaded ✅" : "Missing ❌"
-);
-
-// ✅ Health check route
+// Health check
 app.get("/", (req, res) => {
   res.send("Server is running ✅");
 });
 
-// ✅ Chat route
+// Chat route
 app.post("/chat", async (req, res) => {
   const { message } = req.body;
 
@@ -34,63 +26,46 @@ app.post("/chat", async (req, res) => {
   try {
     console.log("User message:", message);
 
-    // ✅ Build API URL from ENV
-    const apiUrl = `${process.env.GEMINI_API_URL}?key=${process.env.GOOGLE_API_KEY}`;
-
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [{ text: message }]
-          }
-        ]
-      })
-    });
-
-    // ❗ Handle HTTP error
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Gemini API Error:", errorText);
-
-      return res.status(500).json({
-        error: "Failed to fetch AI response"
-      });
-    }
+    const response = await fetch(
+      `${process.env.GEMINI_API_URL}?key=${process.env.GOOGLE_API_KEY}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [{ text: message }]
+            }
+          ]
+        })
+      }
+    );
 
     const data = await response.json();
 
-    // ✅ Debug full response
-    console.log("Gemini FULL response:", JSON.stringify(data, null, 2));
+    console.log("Gemini FULL response:", data);
 
-    // ❗ Handle API-level error
     if (data.error) {
       return res.status(500).json({
         error: data.error.message
       });
     }
 
-    // ✅ Extract AI reply safely
     const reply =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "No response from AI";
+      data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    res.json({ reply });
+    res.json({ reply: reply || "No response from AI" });
 
   } catch (error) {
     console.error("Server error:", error);
-
     res.status(500).json({
-      error: "AI request failed",
-      details: error.message
+      error: "AI request failed"
     });
   }
 });
 
-// ✅ Start server
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
