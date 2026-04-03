@@ -1,33 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
-<title>Why Hire Me</title>
+<title>Why Hire Me - Rajendra</title>
+
 <script src="https://cdn.tailwindcss.com"></script>
+
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Ovo&display=swap" rel="stylesheet">
+
+<style>
+
+/* Floating animation */
+@keyframes float {
+0% { transform: translateY(0px); }
+50% { transform: translateY(-10px); }
+100% { transform: translateY(0px); }
+}
+
+.float {
+animation: float 4s ease-in-out infinite;
+}
+
+/* Glow effect */
+.glow:hover {
+box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
+}
+
+</style>
+
 </head>
 
-<body class="font-Outfit dark:bg-[#0f172a] dark:text-white">
+<body class="font-Outfit bg-gray-50 dark:bg-[#0f172a] dark:text-white">
 
 <div class="text-center py-20 px-[12%]">
 
-<h1 class="text-5xl font-Ovo mb-12 
-bg-gradient-to-r from-purple-500 to-pink-500 
+<h4 class="text-lg font-Ovo">Why Choose Me</h4>
+
+<h1 class="text-5xl font-Ovo mt-2 mb-6 
+bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 
 bg-clip-text text-transparent">
 Why Hire Me
 </h1>
 
-<div class="grid md:grid-cols-2 gap-8">
+<p class="max-w-2xl mx-auto mb-16">
+I focus on delivering high-quality, scalable, and efficient solutions that solve real-world problems and create impact.
+</p>
 
-<div class="p-6 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow hover:scale-105 transition">💡 Problem Solver Mindset</div>
-<div class="p-6 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow hover:scale-105 transition">🧹 Clean & Maintainable Code</div>
-<div class="p-6 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow hover:scale-105 transition">⚡ Fast Learner</div>
-<div class="p-6 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow hover:scale-105 transition">🚀 Strong MERN Stack</div>
-<div class="p-6 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow hover:scale-105 transition">🔧 DevOps & Deployment Skills</div>
+<!-- ================= GRID ================= -->
+
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+<!-- Problem Solver -->
+<div class="float glow p-6 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow-lg border border-white/20 text-center hover:scale-105 transition">
+
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="w-14 mx-auto mb-4">
+
+<h3 class="text-xl font-semibold text-purple-500">Problem Solver</h3>
+
+<p class="text-sm mt-2 text-gray-600 dark:text-white/80">
+I focus on solving real-world problems with efficient and scalable solutions.
+</p>
 
 </div>
 
-<a href="index.html" class="mt-12 inline-block text-purple-500">← Back to Home</a>
+<!-- Clean Code -->
+<div class="float glow p-6 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow-lg border border-white/20 text-center hover:scale-105 transition">
+
+<img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" class="w-14 mx-auto mb-4">
+
+<h3 class="text-xl font-semibold text-pink-500">Clean Code</h3>
+
+<p class="text-sm mt-2 text-gray-600 dark:text-white/80">
+Maintainable, readable, and optimized code following industry best practices.
+</p>
+
+</div>
+
+<!-- Fast Learner -->
+<div class="float glow p-6 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow-lg border border-white/20 text-center hover:scale-105 transition">
+
+<img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" class="w-14 mx-auto mb-4">
+
+<h3 class="text-xl font-semibold text-orange-500">Fast Learner</h3>
+
+<p class="text-sm mt-2 text-gray-600 dark:text-white/80">
+Quickly adapt to new technologies and deliver results efficiently.
+</p>
+
+</div>
+
+<!-- Full Stack + DevOps -->
+<div class="float glow p-6 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow-lg border border-white/20 text-center hover:scale-105 transition">
+
+<img src="https://cdn-icons-png.flaticon.com/512/919/919825.png" class="w-14 mx-auto mb-4">
+
+<h3 class="text-xl font-semibold text-green-500">Full Stack + DevOps</h3>
+
+<p class="text-sm mt-2 text-gray-600 dark:text-white/80">
+Strong expertise in MERN stack and DevOps tools for end-to-end development.
+</p>
+
+</div>
+
+<!-- Performance Focus -->
+<div class="float glow p-6 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow-lg border border-white/20 text-center hover:scale-105 transition">
+
+<img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" class="w-14 mx-auto mb-4">
+
+<h3 class="text-xl font-semibold text-blue-500">Performance Focus</h3>
+
+<p class="text-sm mt-2 text-gray-600 dark:text-white/80">
+Optimized applications for speed, scalability, and best user experience.
+</p>
+
+</div>
+
+<!-- Reliability -->
+<div class="float glow p-6 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow-lg border border-white/20 text-center hover:scale-105 transition">
+
+<img src="https://cdn-icons-png.flaticon.com/512/942/942748.png" class="w-14 mx-auto mb-4">
+
+<h3 class="text-xl font-semibold text-indigo-500">Reliable & Dedicated</h3>
+
+<p class="text-sm mt-2 text-gray-600 dark:text-white/80">
+Committed to delivering projects on time with high quality and consistency.
+</p>
+
+</div>
+
+</div>
+
+<!-- ================= CTA ================= -->
+
+<div class="mt-16">
+
+<h3 class="text-2xl font-semibold mb-4">
+Ready to work together? 🚀
+</h3>
+
+<a href="index.html#contact"
+class="inline-block px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 
+text-white rounded-full hover:scale-105 transition">
+Contact Me
+</a>
+
+</div>
+
+<!-- Back -->
+<a href="index.html" class="mt-10 block text-purple-500">← Back to Home</a>
 
 </div>
 
