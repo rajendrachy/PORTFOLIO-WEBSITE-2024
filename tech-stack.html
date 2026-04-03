@@ -2,8 +2,6 @@
 <html lang="en" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Tech Stack - Rajendra</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -15,7 +13,7 @@
 /* Floating animation */
 @keyframes float {
 0% { transform: translateY(0px); }
-50% { transform: translateY(-12px); }
+50% { transform: translateY(-8px); }
 100% { transform: translateY(0px); }
 }
 
@@ -23,124 +21,111 @@
 animation: float 4s ease-in-out infinite;
 }
 
-/* Glow hover */
+/* Glow effect */
 .glow:hover {
-box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
-}
-
-/* Background blur blobs */
-.blob {
-position: absolute;
-width: 300px;
-height: 300px;
-background: radial-gradient(circle, #a855f7, transparent);
-filter: blur(100px);
-opacity: 0.3;
-z-index: -1;
+box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
 }
 
 </style>
 
 </head>
 
-<body class="font-Outfit bg-gray-50 dark:bg-[#0f172a] dark:text-white overflow-x-hidden">
-
-<!-- Background blobs -->
-<div class="blob top-10 left-10"></div>
-<div class="blob bottom-10 right-10"></div>
-
-<!-- ================= HEADER ================= -->
+<body class="font-Outfit bg-gray-50 dark:bg-[#0f172a] dark:text-white">
 
 <div class="text-center py-20 px-[12%]">
 
-<h1 class="text-5xl font-Ovo mb-6 
+<h4 class="text-lg font-Ovo">Technologies I Use</h4>
+
+<h1 class="text-5xl font-Ovo mt-2 mb-6 
 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 
 bg-clip-text text-transparent">
 My Tech Stack
 </h1>
 
 <p class="max-w-2xl mx-auto mb-16">
-Tools & technologies I use to build modern, scalable and high-performance applications.
+A collection of technologies, tools, and platforms I use to build scalable and modern applications.
 </p>
 
 <!-- ================= GRID ================= -->
 
-<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-10">
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
 
 <!-- React -->
-<div class="float glow p-6 bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl text-center">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" class="w-16 mx-auto">
+<div class="float glow p-6 text-center rounded-xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow border">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" class="w-14 mx-auto">
+<p class="mt-3 font-medium">React</p>
 </div>
 
 <!-- Node -->
-<div class="float glow p-6 bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl text-center">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" class="w-16 mx-auto">
+<div class="float glow p-6 text-center rounded-xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow border">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" class="w-14 mx-auto">
+<p class="mt-3 font-medium">Node.js</p>
 </div>
 
 <!-- MongoDB -->
-<div class="float glow p-6 bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl text-center">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" class="w-16 mx-auto">
-</div>
-
-<!-- SQL -->
-<div class="float glow p-6 bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl text-center">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" class="w-16 mx-auto">
-</div>
-
-<!-- Git -->
-<div class="float glow p-6 bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl text-center">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" class="w-16 mx-auto">
-</div>
-
-<!-- GitHub -->
-<div class="float glow p-6 bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl text-center">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" class="w-16 mx-auto bg-white rounded-full p-1">
-</div>
-
-<!-- VS Code -->
-<div class="float glow p-6 bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl text-center">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" class="w-16 mx-auto">
+<div class="float glow p-6 text-center rounded-xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow border">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" class="w-14 mx-auto">
+<p class="mt-3 font-medium">MongoDB</p>
 </div>
 
 <!-- Docker -->
-<div class="float glow p-6 bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl text-center">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" class="w-16 mx-auto">
+<div class="float glow p-6 text-center rounded-xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow border">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" class="w-14 mx-auto">
+<p class="mt-3 font-medium">Docker</p>
 </div>
 
 <!-- AWS -->
-<div class="float glow p-6 bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl text-center">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" class="w-16 mx-auto">
+<div class="float glow p-6 text-center rounded-xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow border">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" class="w-14 mx-auto">
+<p class="mt-3 font-medium">AWS</p>
+</div>
+
+<!-- VS Code -->
+<div class="float glow p-6 text-center rounded-xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow border">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" class="w-14 mx-auto">
+<p class="mt-3 font-medium">VS Code</p>
+</div>
+
+<!-- Git -->
+<div class="float glow p-6 text-center rounded-xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow border">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" class="w-14 mx-auto">
+<p class="mt-3 font-medium">Git</p>
+</div>
+
+<!-- GitHub -->
+<div class="float glow p-6 text-center rounded-xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow border">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" class="w-14 mx-auto bg-white rounded-full">
+<p class="mt-3 font-medium">GitHub</p>
+</div>
+
+<!-- SQL -->
+<div class="float glow p-6 text-center rounded-xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow border">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" class="w-14 mx-auto">
+<p class="mt-3 font-medium">SQL</p>
 </div>
 
 <!-- Linux -->
-<div class="float glow p-6 bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl text-center">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" class="w-16 mx-auto">
+<div class="float glow p-6 text-center rounded-xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow border">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" class="w-14 mx-auto">
+<p class="mt-3 font-medium">Linux</p>
 </div>
 
 <!-- ChatGPT -->
-<div class="float glow p-6 bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl text-center">
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="w-16 mx-auto">
+<div class="float glow p-6 text-center rounded-xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow border">
+<img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" class="w-14 mx-auto">
+<p class="mt-3 font-medium">ChatGPT</p>
 </div>
 
-<!-- DeepSeek -->
-<div class="float glow p-6 bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl text-center">
-<img src="https://cdn-icons-png.flaticon.com/512/4712/4712027.png" class="w-16 mx-auto">
-</div>
-
-<!-- Blackbox -->
-<div class="float glow p-6 bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl text-center">
-<img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" class="w-16 mx-auto">
+<!-- DevOps -->
+<div class="float glow p-6 text-center rounded-xl bg-white/70 dark:bg-white/10 backdrop-blur-lg shadow border">
+<img src="https://cdn-icons-png.flaticon.com/512/919/919853.png" class="w-14 mx-auto">
+<p class="mt-3 font-medium">DevOps</p>
 </div>
 
 </div>
 
-<!-- ================= BACK BUTTON ================= -->
-
-<a href="index.html"
-class="mt-20 inline-block px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 
-text-white rounded-full hover:scale-105 transition">
-← Back to Home
-</a>
+<!-- Back -->
+<a href="index.html" class="mt-12 block text-purple-500">← Back to Home</a>
 
 </div>
 
