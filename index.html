@@ -267,11 +267,11 @@ sendMessage()
         
 
   <div class="flex item-center gap-4"> 
-        <button onclick="toggleTheme()">
-            <img src="./IMAGES/moonicon.png" alt="" class="w-6 dark:hidden">
-            <img src="./IMAGES/sunicon.png" alt="" class="w-6 hidden dark:block">
-
-        </button>
+       <button onclick="toggleTheme()" 
+          class="relative z-60 p-2 bg-gray-200 dark:bg-gray-800 rounded-full shadow-md hover:shadow-lg transition">
+    <img src="./IMAGES/moonicon.png" alt="Dark Mode" class="w-6 dark:hidden">
+    <img src="./IMAGES/sunicon.png" alt="Light Mode" class="w-6 hidden dark:block">
+  </button>
 
         <a href="#contact" 
         class="hidden lg:flex item-center gap-3 px-10 py-2.5 border 
