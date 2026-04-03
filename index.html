@@ -374,58 +374,132 @@ var typed = new Typed("#typing-text", {
   
 
 
-
-    <!-- ================= EXPLORE MORE (PROFESSIONAL COLOR) ================= -->
+    <!-- ================= EXPLORE MORE (PROFESSIONAL CARDS) ================= -->
 
 <section class="w-full px-[12%] py-20 text-center">
 
   <h2 class="text-4xl font-Ovo mb-14 text-gray-800">Explore More</h2>
 
   <!-- GRID: 4 per row -->
-  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
 
-    <a href="services.html" class="py-4 px-6 bg-blue-100 text-blue-800 rounded-lg 
-       hover:bg-blue-200 transition">Services</a>
+    <!-- Services -->
+    <a href="services.html" class="flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 
+       text-blue-800 rounded-xl shadow-md hover:shadow-lg transition">
+      <svg class="w-12 h-12 mb-3" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3z"/>
+      </svg>
+      <span class="font-semibold text-lg">Services</span>
+    </a>
 
-    <a href="why-hire-me.html" class="py-4 px-6 bg-purple-100 text-purple-800 rounded-lg 
-       hover:bg-purple-200 transition">Why Hire Me</a>
+    <!-- Why Hire Me -->
+    <a href="why-hire-me.html" class="flex flex-col items-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 
+       text-purple-800 rounded-xl shadow-md hover:shadow-lg transition">
+      <svg class="w-12 h-12 mb-3" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+      </svg>
+      <span class="font-semibold text-lg">Why Hire Me</span>
+    </a>
 
-    <a href="tech-stack.html" class="py-4 px-6 bg-gray-100 text-gray-800 rounded-lg 
-       hover:bg-gray-200 transition">Tech Stack</a>
+    <!-- Tech Stack -->
+    <a href="tech-stack.html" class="flex flex-col items-center p-6 bg-gradient-to-br from-gray-50 to-gray-100 
+       text-gray-800 rounded-xl shadow-md hover:shadow-lg transition">
+      <svg class="w-12 h-12 mb-3" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+      </svg>
+      <span class="font-semibold text-lg">Tech Stack</span>
+    </a>
 
-    <a href="blog.html" class="py-4 px-6 bg-green-100 text-green-800 rounded-lg 
-       hover:bg-green-200 transition">Blog</a>
+    <!-- Blog -->
+    <a href="blog.html" class="flex flex-col items-center p-6 bg-gradient-to-br from-green-50 to-green-100 
+       text-green-800 rounded-xl shadow-md hover:shadow-lg transition">
+      <svg class="w-12 h-12 mb-3" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M3 3h18v2H3V3zm0 4h12v2H3V7zm0 4h18v2H3v-2zm0 4h12v2H3v-2zm0 4h18v2H3v-2z"/>
+      </svg>
+      <span class="font-semibold text-lg">Blog</span>
+    </a>
 
-    <a href="case-studies.html" class="py-4 px-6 bg-indigo-100 text-indigo-800 rounded-lg 
-       hover:bg-indigo-200 transition">Case Studies</a>
+    <!-- Case Studies -->
+    <a href="case-studies.html" class="flex flex-col items-center p-6 bg-gradient-to-br from-indigo-50 to-indigo-100 
+       text-indigo-800 rounded-xl shadow-md hover:shadow-lg transition">
+      <svg class="w-12 h-12 mb-3" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 8h14v-2H7v2zm0-4h14v-2H7v2zm0-6v2h14V7H7z"/>
+      </svg>
+      <span class="font-semibold text-lg">Case Studies</span>
+    </a>
 
-    <a href="experience.html" class="py-4 px-6 bg-teal-100 text-teal-800 rounded-lg 
-       hover:bg-teal-200 transition">Experience</a>
+    <!-- Experience -->
+    <a href="experience.html" class="flex flex-col items-center p-6 bg-gradient-to-br from-teal-50 to-teal-100 
+       text-teal-800 rounded-xl shadow-md hover:shadow-lg transition">
+      <svg class="w-12 h-12 mb-3" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2l4 8H8l4-8zm0 4v12h-2v-12h2zm2 12h2v2h-2v-2zm-6 0h2v2H8v-2z"/>
+      </svg>
+      <span class="font-semibold text-lg">Experience</span>
+    </a>
 
-    <a href="projects-detail.html" class="py-4 px-6 bg-purple-100 text-purple-800 rounded-lg 
-       hover:bg-purple-200 transition">Project Details</a>
+    <!-- Project Details -->
+    <a href="projects-detail.html" class="flex flex-col items-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 
+       text-purple-800 rounded-xl shadow-md hover:shadow-lg transition">
+      <svg class="w-12 h-12 mb-3" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M5 3h14v18H5V3zm2 2v14h10V5H7z"/>
+      </svg>
+      <span class="font-semibold text-lg">Project Details</span>
+    </a>
 
-    <a href="coding-profiles.html" class="py-4 px-6 bg-pink-100 text-pink-800 rounded-lg 
-       hover:bg-pink-200 transition">Coding Profiles</a>
+    <!-- Coding Profiles -->
+    <a href="coding-profiles.html" class="flex flex-col items-center p-6 bg-gradient-to-br from-red-50 to-red-100 
+       text-red-800 rounded-xl shadow-md hover:shadow-lg transition">
+      <svg class="w-12 h-12 mb-3" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M8 16h8v2H8v-2zm0-4h8v2H8v-2zm0-4h8v2H8V8z"/>
+      </svg>
+      <span class="font-semibold text-lg">Coding Profiles</span>
+    </a>
 
-    <a href="resume.html" class="py-4 px-6 bg-gray-100 text-gray-800 rounded-lg 
-       hover:bg-gray-200 transition">Resume</a>
+    <!-- Resume -->
+    <a href="resume.html" class="flex flex-col items-center p-6 bg-gradient-to-br from-gray-50 to-gray-100 
+       text-gray-800 rounded-xl shadow-md hover:shadow-lg transition">
+      <svg class="w-12 h-12 mb-3" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M6 2h12v20H6V2zm2 2v16h8V4H8z"/>
+      </svg>
+      <span class="font-semibold text-lg">Resume</span>
+    </a>
 
-    <a href="testimonials.html" class="py-4 px-6 bg-blue-100 text-blue-800 rounded-lg 
-       hover:bg-blue-200 transition">Testimonials</a>
+    <!-- Testimonials -->
+    <a href="testimonials.html" class="flex flex-col items-center p-6 bg-gradient-to-br from-pink-50 to-pink-100 
+       text-pink-800 rounded-xl shadow-md hover:shadow-lg transition">
+      <svg class="w-12 h-12 mb-3" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M21 6h-18v12h18V6zm-2 10H5V8h14v8z"/>
+      </svg>
+      <span class="font-semibold text-lg">Testimonials</span>
+    </a>
 
-    <a href="system-design.html" class="py-4 px-6 bg-cyan-100 text-cyan-800 rounded-lg 
-       hover:bg-cyan-200 transition">System Design</a>
+    <!-- System Design -->
+    <a href="system-design.html" class="flex flex-col items-center p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 
+       text-cyan-800 rounded-xl shadow-md hover:shadow-lg transition">
+      <svg class="w-12 h-12 mb-3" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M4 4h16v2H4V4zm0 4h16v2H4V8zm0 4h16v2H4v-2zm0 4h16v2H4v-2z"/>
+      </svg>
+      <span class="font-semibold text-lg">System Design</span>
+    </a>
 
-    <a href="ai-projects.html" class="py-4 px-6 bg-indigo-100 text-indigo-800 rounded-lg 
-       hover:bg-indigo-200 transition">AI Projects</a>
+    <!-- AI Projects -->
+    <a href="ai-projects.html" class="flex flex-col items-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 
+       text-purple-800 rounded-xl shadow-md hover:shadow-lg transition">
+      <svg class="w-12 h-12 mb-3" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 14h-2v-2h2v2zm0-4h-2V6h2v6z"/>
+      </svg>
+      <span class="font-semibold text-lg">AI Projects</span>
+    </a>
 
   </div>
-
 </section>
 
-<!-- ================= END ================= -->
+    <!-- ENd-->
     
+
+
+
+
     
 
 
