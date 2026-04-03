@@ -1,32 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
-<title>Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Blog - Rajendra</title>
+
 <script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Ovo&display=swap" rel="stylesheet">
+
+<style>
+
+/* Floating animation */
+@keyframes float {
+0% { transform: translateY(0px); }
+50% { transform: translateY(-10px); }
+100% { transform: translateY(0px); }
+}
+
+.float {
+animation: float 4s ease-in-out infinite;
+}
+
+/* Glow effect */
+.glow:hover {
+box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+}
+
+/* Background blobs */
+.blob {
+position: absolute;
+width: 300px;
+height: 300px;
+background: radial-gradient(circle, #a855f7, transparent);
+filter: blur(100px);
+opacity: 0.3;
+z-index: -1;
+}
+
+</style>
+
 </head>
 
-<body class="bg-gray-50">
+<body class="font-Outfit bg-gray-50 dark:bg-[#0f172a] dark:text-white overflow-x-hidden">
 
-<div class="text-center py-16 px-[12%]">
+<!-- Background -->
+<div class="blob top-10 left-10"></div>
+<div class="blob bottom-10 right-10"></div>
 
-<h1 class="text-5xl font-bold mb-10">Blog & Articles</h1>
+<!-- ================= HEADER ================= -->
 
-<div class="space-y-6">
+<div class="text-center py-20 px-[12%]">
 
-<div class="p-6 bg-white rounded-xl shadow">
-<h3 class="text-xl font-semibold">How I Built My Chat App</h3>
-<p class="text-gray-600 text-sm mt-2">Full MERN stack project explanation.</p>
+<h1 class="text-5xl font-Ovo mb-6 
+bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 
+bg-clip-text text-transparent">
+My Blogs & Articles
+</h1>
+
+<p class="max-w-2xl mx-auto mb-16">
+Sharing my knowledge, experiences, and learnings in Web Development, DevOps, and Software Engineering.
+</p>
+
+<!-- ================= BLOG GRID ================= -->
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+
+<!-- BLOG 1 -->
+<div class="float glow bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition">
+
+<img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c" class="w-full h-48 object-cover">
+
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">How I Built My Chat App (MERN)</h3>
+<p class="text-sm mb-4 text-gray-600 dark:text-white/80">
+Step-by-step guide on building a real-time chat application using MERN stack.
+</p>
+
+<a href="#" class="text-purple-600 font-medium">Read More →</a>
 </div>
 
-<div class="p-6 bg-white rounded-xl shadow">
-<h3 class="text-xl font-semibold">Docker Basics for Beginners</h3>
-<p class="text-gray-600 text-sm mt-2">Learn Docker step by step.</p>
+</div>
+
+<!-- BLOG 2 -->
+<div class="float glow bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition">
+
+<img src="https://images.unsplash.com/photo-1605379399642-870262d3d051" class="w-full h-48 object-cover">
+
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Docker Basics for Beginners</h3>
+<p class="text-sm mb-4 text-gray-600 dark:text-white/80">
+Learn Docker from scratch — containers, images, and real-world usage.
+</p>
+
+<a href="#" class="text-purple-600 font-medium">Read More →</a>
 </div>
 
 </div>
 
-<a href="index.html" class="mt-10 inline-block text-blue-600">← Back to Home</a>
+<!-- BLOG 3 -->
+<div class="float glow bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition">
+
+<img src="https://images.unsplash.com/photo-1518770660439-4636190af475" class="w-full h-48 object-cover">
+
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">CI/CD Pipeline Explained</h3>
+<p class="text-sm mb-4 text-gray-600 dark:text-white/80">
+Understand how CI/CD works and how to automate deployments like a pro.
+</p>
+
+<a href="#" class="text-purple-600 font-medium">Read More →</a>
+</div>
+
+</div>
+
+<!-- BLOG 4 -->
+<div class="float glow bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition">
+
+<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085" class="w-full h-48 object-cover">
+
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Frontend vs Backend</h3>
+<p class="text-sm mb-4 text-gray-600 dark:text-white/80">
+Difference between frontend and backend development with real examples.
+</p>
+
+<a href="#" class="text-purple-600 font-medium">Read More →</a>
+</div>
+
+</div>
+
+<!-- BLOG 5 -->
+<div class="float glow bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition">
+
+<img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c" class="w-full h-48 object-cover">
+
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Git & GitHub Guide</h3>
+<p class="text-sm mb-4 text-gray-600 dark:text-white/80">
+Complete beginner-friendly guide to Git and GitHub workflows.
+</p>
+
+<a href="#" class="text-purple-600 font-medium">Read More →</a>
+</div>
+
+</div>
+
+<!-- BLOG 6 -->
+<div class="float glow bg-white/70 dark:bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition">
+
+<img src="https://images.unsplash.com/photo-1537432376769-00a74b8c2f63" class="w-full h-48 object-cover">
+
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">My Developer Journey</h3>
+<p class="text-sm mb-4 text-gray-600 dark:text-white/80">
+From beginner to full stack developer — lessons, struggles, and growth.
+</p>
+
+<a href="#" class="text-purple-600 font-medium">Read More →</a>
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= BACK BUTTON ================= -->
+
+<a href="index.html"
+class="mt-20 inline-block px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 
+text-white rounded-full hover:scale-105 transition">
+← Back to Home
+</a>
 
 </div>
 
