@@ -29,18 +29,22 @@ app.post("/chat", async (req, res) => {
 
   // Mock response for development
   console.log("Mock response for:", message);
-  const msg = message.toLowerCase();
+  const msg = message.toLowerCase().trim();
   let reply;
-  if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
-    reply = "Hello! I'm Rajendra's AI assistant. Rajendra is a skilled web developer with expertise in HTML, CSS, JavaScript, Node.js, and more. How can I help you today?";
-  } else if (msg.includes("who") || msg.includes("about")) {
-    reply = "Rajendra Chaudhary is a passionate web developer from Nepal. He specializes in front-end and back-end development, creating responsive and user-friendly applications.";
-  } else if (msg.includes("skill") || msg.includes("experience") || msg.includes("work")) {
-    reply = "Rajendra has experience with various technologies including React, Express, databases, and more. He believes in writing clean, efficient code and delivering high-quality solutions.";
-  } else if (msg.includes("contact") || msg.includes("hire")) {
-    reply = "Thanks for your interest in Rajendra! He's currently working on exciting projects and is open to collaborations. Feel free to ask about his skills, experience, or portfolio.";
+  if (msg === "hi" || msg === "hello" || msg === "hey" || msg.includes("hi") || msg.includes("hello") || msg.includes("hey")) {
+    reply = "Hi there! 👋 I'm Rajendra's AI assistant. Rajendra is a talented web developer from Nepal. How can I help you learn more about him?";
+  } else if (msg.includes("who") && (msg.includes("rajendra") || msg.includes("you"))) {
+    reply = "Rajendra Chaudhary is a passionate full-stack web developer specializing in modern technologies like React, Node.js, and databases. He's from Nepal and loves creating user-friendly applications.";
+  } else if (msg.includes("skill") || msg.includes("what do you know") || msg.includes("technologies")) {
+    reply = "Rajendra's skills include: HTML, CSS, JavaScript, React, Node.js, Express, MongoDB, and more. He's always learning new tools to build better solutions!";
+  } else if (msg.includes("experience") || msg.includes("work") || msg.includes("project")) {
+    reply = "Rajendra has experience building responsive websites, web apps, and APIs. He focuses on clean code, performance, and great user experiences. Check out his portfolio for examples!";
+  } else if (msg.includes("contact") || msg.includes("hire") || msg.includes("email")) {
+    reply = "Interested in working with Rajendra? He's open to collaborations and new opportunities. You can reach him through the contact form on this site or LinkedIn!";
+  } else if (msg.includes("thank") || msg.includes("bye")) {
+    reply = "You're welcome! Feel free to ask more questions anytime. Have a great day! 😊";
   } else {
-    reply = "That's interesting! Rajendra is always eager to learn new technologies and take on challenging projects. What specific aspect of his work would you like to know more about?";
+    reply = "That's a great question! Rajendra is dedicated to his craft and always eager to take on new challenges. What specific aspect would you like to know more about?";
   }
   return res.json({ reply });
 
