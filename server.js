@@ -29,14 +29,19 @@ app.post("/chat", async (req, res) => {
 
   // Mock response for development
   console.log("Mock response for:", message);
-  const mockReplies = [
-    "Hello! I'm Rajendra's AI assistant. Rajendra is a skilled web developer with expertise in HTML, CSS, JavaScript, Node.js, and more. He loves building interactive websites and solving complex problems.",
-    "Rajendra Chaudhary is a passionate web developer from Nepal. He specializes in front-end and back-end development, creating responsive and user-friendly applications.",
-    "That's interesting! Rajendra has experience with various technologies including React, Express, and database management. What specific aspect of his work would you like to know more about?",
-    "Rajendra is always eager to learn new technologies and take on challenging projects. He believes in writing clean, efficient code and delivering high-quality solutions.",
-    "Thanks for your interest in Rajendra! He's currently working on exciting projects and is open to collaborations. Feel free to ask about his skills, experience, or portfolio."
-  ];
-  const reply = mockReplies[Math.floor(Math.random() * mockReplies.length)];
+  const msg = message.toLowerCase();
+  let reply;
+  if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
+    reply = "Hello! I'm Rajendra's AI assistant. Rajendra is a skilled web developer with expertise in HTML, CSS, JavaScript, Node.js, and more. How can I help you today?";
+  } else if (msg.includes("who") || msg.includes("about")) {
+    reply = "Rajendra Chaudhary is a passionate web developer from Nepal. He specializes in front-end and back-end development, creating responsive and user-friendly applications.";
+  } else if (msg.includes("skill") || msg.includes("experience") || msg.includes("work")) {
+    reply = "Rajendra has experience with various technologies including React, Express, databases, and more. He believes in writing clean, efficient code and delivering high-quality solutions.";
+  } else if (msg.includes("contact") || msg.includes("hire")) {
+    reply = "Thanks for your interest in Rajendra! He's currently working on exciting projects and is open to collaborations. Feel free to ask about his skills, experience, or portfolio.";
+  } else {
+    reply = "That's interesting! Rajendra is always eager to learn new technologies and take on challenging projects. What specific aspect of his work would you like to know more about?";
+  }
   return res.json({ reply });
 
   // Commented out API call for now
