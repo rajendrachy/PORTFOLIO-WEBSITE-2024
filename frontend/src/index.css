@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Ovo&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Custom Properties & Design Tokens ──────────────── */
+:root {
+  --font-outfit: 'Outfit', sans-serif;
+  --font-ovo: 'Ovo', serif;
+  
+  /* Advanced Professional Palette */
+  --primary: 221 83% 53%;       /* Blue-600 */
+  --primary-foreground: 0 0% 100%;
+  
+  --secondary: 188 78% 41%;     /* Cyan-600 */
+  
+  /* Light Mode - High Contrast Fix */
+  --background: 0 0% 100%;
+  --foreground: 224 71% 4%;     /* Almost Black for text */
+  --muted: 215 16% 47%;         /* Deep Gray for sub-text */
+  
+  --card: 0 0% 100%;
+  --card-foreground: 224 71% 4%;
+  
+  --border: 214 32% 91%;        /* Slightly darker border for clarity */
+  --ring: 271 81% 56%;
+}
+
+.dark {
+  --background: 251 44% 4%;     /* Much deeper Dark mode */
+  --foreground: 210 40% 98%;
+  --muted: 215 20% 65%;
+  
+  --card: 251 44% 8%;
+  --card-foreground: 210 40% 98%;
+  
+  --border: 251 44% 15%;
+}
+
+/* ── Base Styles ────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-outfit);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s;
+  overflow-x: hidden;
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Typography Utility ─────────────────────────────── */
+.font-Ovo { font-family: var(--font-ovo); }
+.font-Outfit { font-family: var(--font-outfit); }
+
+/* ── Advanced Professional Glassmorphism ────────────── */
+.glass {
+  background: hsla(0, 0%, 100%, 0.8);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid hsl(var(--border) / 1);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+}
+
+.dark .glass {
+  background: hsla(251, 44%, 8%, 0.75);
+  border: 1px solid hsla(0, 0%, 100%, 0.08);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+}
+
+/* ── Fancy Contrast Helpers ─────────────────────────── */
+.text-muted {
+  color: hsl(var(--muted));
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)), #f97316);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Better Input States ────────────────────────────── */
+input, textarea {
+  color: hsl(var(--foreground)) !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: hsl(var(--muted) / 0.8) !important;
+}
+
+/* ── Mobile & Grid Padding ──────────────────────────── */
+section {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  section {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+}
+
+/* ── Fluid Headers ──────────────────────────────────── */
+h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); line-height: 1.1; font-weight: 800; }
+h2 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.2; font-weight: 700; }
+h3 { font-size: clamp(1.25rem, 3vw, 1.75rem); font-weight: 600; }
+
+/* ── Scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: hsl(var(--background)); }
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted) / 0.3);
+  border-radius: 100px;
+  border: 3px solid hsl(var(--background));
+}
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary)); }
