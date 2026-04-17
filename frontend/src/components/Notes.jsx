@@ -3,6 +3,8 @@ import { motion } from 'framer-motion'
 import axios from 'axios'
 import notesIcon from '../assets/images/notes.png'
 
+const API_URL = import.meta.env.VITE_API_URL || ''
+
 export default function Notes() {
   const [notes, setNotes] = useState([])
   const [loading, setLoading] = useState(true)
@@ -10,7 +12,7 @@ export default function Notes() {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const res = await axios.get('/api/admin/notes')
+        const res = await axios.get(`${API_URL}/api/admin/notes`)
         if (res.data.length === 0) {
            // Fallback to initial seeds if DB is empty
            setNotes([

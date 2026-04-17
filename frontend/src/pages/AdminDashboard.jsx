@@ -18,6 +18,8 @@ import {
   ChevronRight
 } from 'lucide-react'
 
+const API_URL = import.meta.env.VITE_API_URL || ''
+
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('projects')
   const [data, setData] = useState({ projects: [], stats: [], notes: [], achievements: [], messages: [] })
@@ -37,7 +39,7 @@ export default function AdminDashboard() {
     setLoading(true)
     try {
       const token = localStorage.getItem('adminToken')
-      const res = await axios.get(`/api/admin/${activeTab}`, { headers: { 'x-auth-token': token } })
+      const res = await axios.get(`${API_URL}/api/admin/${activeTab}`, { headers: { 'x-auth-token': token } })
       setData(prev => ({ ...prev, [activeTab]: res.data }))
     } catch (err) {
       if (err.response?.status === 401) handleLogout()
@@ -55,7 +57,7 @@ export default function AdminDashboard() {
     e.preventDefault()
     try {
       const token = localStorage.getItem('adminToken')
-      await axios.post(`/api/admin/${activeTab}`, form, { headers: { 'x-auth-token': token } })
+      await axios.post(`${API_URL}/api/admin/${activeTab}`, form, { headers: { 'x-auth-token': token } })
       setShowAddModal(false)
       fetchData()
       setForm({})
@@ -66,7 +68,7 @@ export default function AdminDashboard() {
     if (!window.confirm('Are you sure you want to permanently delete this record?')) return
     try {
       const token = localStorage.getItem('adminToken')
-      await axios.delete(`/api/admin/${activeTab}/${id}`, { headers: { 'x-auth-token': token } })
+      await axios.delete(`${API_URL}/api/admin/${activeTab}/${id}`, { headers: { 'x-auth-token': token } })
       fetchData()
     } catch (err) { alert('Error deleting') }
   }

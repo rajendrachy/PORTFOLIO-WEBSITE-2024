@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import robotIcon from '../assets/images/robot-icon.png'
 
+const API_URL = import.meta.env.VITE_API_URL || ''
+
 export default function AiChat() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState([
@@ -24,7 +26,7 @@ export default function AiChat() {
     setLoading(true)
 
     try {
-      const res = await fetch('/chat', {
+      const res = await fetch(`${API_URL}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text }),
