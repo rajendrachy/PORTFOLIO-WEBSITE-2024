@@ -139,6 +139,24 @@ export default function AdminDashboard() {
                 <input className="w-full px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none" value={siteConfig.contactText || ''} onChange={e => setSiteConfig({...siteConfig, contactText: e.target.value})} />
              </div>
            </div>
+           <div className="space-y-2">
+              <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest">About Description</label>
+              <textarea className="w-full px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none min-h-[100px]" value={siteConfig.aboutDescription || ''} onChange={e => setSiteConfig({...siteConfig, aboutDescription: e.target.value})} />
+           </div>
+           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+             <div className="space-y-2">
+                <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest">About Languages</label>
+                <input className="w-full px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none" value={siteConfig.aboutLanguages || ''} onChange={e => setSiteConfig({...siteConfig, aboutLanguages: e.target.value})} />
+             </div>
+             <div className="space-y-2">
+                <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest">About Education</label>
+                <input className="w-full px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none" value={siteConfig.aboutEducation || ''} onChange={e => setSiteConfig({...siteConfig, aboutEducation: e.target.value})} />
+             </div>
+             <div className="space-y-2">
+                <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest">About Projects</label>
+                <input className="w-full px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none" value={siteConfig.aboutProjects || ''} onChange={e => setSiteConfig({...siteConfig, aboutProjects: e.target.value})} />
+             </div>
+           </div>
            <button type="submit" className="w-full py-4 mt-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl shadow-blue-500/20 hover:scale-[1.02] active:scale-95 transition-all">Save Global Settings</button>
         </form>
       )

@@ -45,6 +45,10 @@ const siteConfigSchema = new mongoose.Schema({
   heroDescription: { type: String, default: "I am a Full Stack Web | Software Developer from Nepal, specializing in building scalable, secure web applications and robust infrastructure." },
   resumeLink: { type: String, default: "/resume.pdf" },
   contactText: { type: String, default: "Contact me" },
+  aboutDescription: { type: String, default: "I am a passionate Full Stack Developer from Nepal with 2+ years of experience building modern, scalable, and user-friendly web applications." },
+  aboutLanguages: { type: String, default: "JS, Node, Java, C++" },
+  aboutEducation: { type: String, default: "B.E. Computer Science" },
+  aboutProjects: { type: String, default: "4+ Major Full-Stack Apps" },
 }, { timestamps: true });
 
 const serviceSchema = new mongoose.Schema({

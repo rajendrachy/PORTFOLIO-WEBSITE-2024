@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import profileImg from '../assets/images/profile-img.jpg'
 import vscodeIcon from '../assets/images/vscode.png'
+import api from '../utils/api'
 
 const tools = [
   { img: vscodeIcon, name: 'VS Code' },
@@ -12,6 +14,22 @@ const tools = [
 ]
 
 export default function About() {
+  const [config, setConfig] = useState(null)
+
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const res = await api.get('/api/admin/site-config')
+        setConfig(res.data)
+      } catch (err) {
+        console.error('Error fetching about config', err)
+      }
+    }
+    fetchConfig()
+  }, [])
+
+  if (!config) return null;
+
   return (
     <div id="about" className="w-full py-24 scroll-mt-20">
       <div className="max-w-6xl mx-auto px-6">
@@ -36,16 +54,15 @@ export default function About() {
           {/* Text Content Column */}
           <div className="flex-1">
             <p className="mb-10 font-Ovo text-gray-700 dark:text-gray-300 leading-relaxed text-lg text-center lg:text-left">
-              I am a passionate <span className="text-blue-600 dark:text-blue-400 font-semibold">Full Stack Developer</span> from Nepal 
-              with 2+ years of experience building modern, scalable, and user-friendly web applications.
+              {config.aboutDescription}
             </p>
 
             {/* Quick Info Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
               {[
-                { label: 'Languages', text: 'JS, Node, Java, C++', icon: 'code' },
-                { label: 'Education', text: 'B.E. Computer Science', icon: 'school' },
-                { label: 'Projects', text: '4+ Major Full-Stack Apps', icon: 'rocket_launch' },
+                { label: 'Languages', text: config.aboutLanguages || 'JS, Node', icon: 'code' },
+                { label: 'Education', text: config.aboutEducation || 'B.E.', icon: 'school' },
+                { label: 'Projects', text: config.aboutProjects || '4+ Apps', icon: 'rocket_launch' },
               ].map((item) => (
                 <div 
                   key={item.label}
