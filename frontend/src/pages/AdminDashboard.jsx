@@ -88,6 +88,34 @@ export default function AdminDashboard() {
       </div>
     )
 
+    if (activeTab === 'stats') {
+      return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {items.map((item) => (
+            <motion.div 
+              layout 
+              key={item._id} 
+              className="glass p-10 rounded-[3rem] border-slate-100 dark:border-white/5 relative overflow-hidden group hover:shadow-2xl transition-all"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-blue-600/10 transition-colors" />
+              <div className="relative z-10">
+                <div className="flex justify-between items-start mb-8">
+                   <div className="w-12 h-12 bg-slate-900 dark:bg-white rounded-2xl flex items-center justify-center text-white dark:text-slate-900 shadow-xl">
+                      <BarChart3 size={24} />
+                   </div>
+                   <button onClick={() => handleDelete(item._id)} className="p-2 text-slate-300 hover:text-red-500 transition-colors">
+                      <Trash2 size={18} />
+                   </button>
+                </div>
+                <h3 className="text-5xl font-black dark:text-white mb-2 tracking-tighter tabular-nums">{item.number}</h3>
+                <p className="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em]">{item.label}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )
+    }
+
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {items.map((item) => (
@@ -181,7 +209,7 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-10 lg:p-16 overflow-y-auto">
+      <main className="flex-1 p-8 md:p-12 lg:p-16 pb-32 xl:pb-16 overflow-y-auto">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
           <div>
             <div className="flex items-center gap-3 mb-2">
@@ -195,9 +223,10 @@ export default function AdminDashboard() {
           {activeTab !== 'messages' && (
             <button 
               onClick={() => setShowAddModal(true)}
-              className="px-10 py-5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-[2rem] font-bold uppercase tracking-widest text-xs hover:shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-3 shadow-xl shadow-blue-500/20"
+              className="w-full md:w-auto px-8 py-4 md:px-10 md:py-5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-3xl md:rounded-[2rem] font-bold uppercase tracking-widest text-[10px] md:text-xs hover:shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 shadow-xl shadow-blue-500/20"
             >
-              <Plus size={20} /> Deploy New {activeTab.slice(0, -1)}
+              <Plus size={20} /> <span className="hidden sm:inline">Deploy New {activeTab.slice(0, -1)}</span>
+              <span className="sm:hidden">Add New</span>
             </button>
           )}
         </header>
@@ -214,6 +243,30 @@ export default function AdminDashboard() {
           </motion.div>
         </AnimatePresence>
       </main>
+
+      {/* Mobile Navigation Bar */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200 dark:border-white/5 p-4 flex justify-around items-center xl:hidden z-[60] shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+        {[
+          { id: 'projects', icon: Briefcase },
+          { id: 'stats', icon: BarChart3 },
+          { id: 'notes', icon: FileText },
+          { id: 'achievements', icon: Award },
+          { id: 'messages', icon: Mail },
+        ].map((item) => (
+          <button
+            key={item.id}
+            onClick={() => setActiveTab(item.id)}
+            className={`p-4 rounded-2xl transition-all ${
+              activeTab === item.id 
+              ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/40 scale-110' 
+              : 'text-slate-400'
+            }`}
+          >
+            <item.icon size={20} />
+          </button>
+        ))}
+        <button onClick={handleLogout} className="p-4 text-red-500"><LogOut size={20} /></button>
+      </nav>
 
       {/* Generic Add Modal */}
       <AnimatePresence>
