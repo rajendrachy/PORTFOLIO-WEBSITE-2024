@@ -10,6 +10,7 @@ export default function Navbar({ dark, toggleTheme }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false)
+  const [scrollProgress, setScrollProgress] = useState(0)
   const location = useLocation()
   const { t, i18n } = useTranslation()
 
@@ -19,8 +20,16 @@ export default function Navbar({ dark, toggleTheme }) {
   }
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handleScroll)
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
+
+      // Scroll progress: how far through the page the user has scrolled
+      const scrollTop = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight
+      const progress = docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0
+      setScrollProgress(progress)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -41,6 +50,22 @@ export default function Navbar({ dark, toggleTheme }) {
         isScrolled ? 'glass py-4 shadow-xl' : 'bg-transparent'
       }`}
     >
+      {/* ── Scroll Progress Bar ──────────────────────────────── */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: `${scrollProgress}%`,
+          height: '4px',
+          background: 'linear-gradient(90deg, hsl(221,83%,53%), hsl(188,78%,41%), hsl(221,83%,65%))',
+          boxShadow: '0 0 10px hsla(221,83%,53%,0.7), 0 0 24px hsla(188,78%,41%,0.4)',
+          transition: 'width 0.08s linear',
+          borderRadius: '0 2px 2px 0',
+          zIndex: 1,
+        }}
+        aria-hidden="true"
+      />
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">

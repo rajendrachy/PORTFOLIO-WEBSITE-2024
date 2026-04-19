@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import profileImg from '../assets/images/profiles.jpeg'
 import { useTranslation } from 'react-i18next'
-import { MapPin, Home, ChevronDown } from 'lucide-react'
+import { MapPin, Home, ChevronDown, BookHeart } from 'lucide-react'
 
 const strings = ['Full Stack Web Developer', 'Software Engineer', 'MERN Stack Developer']
 
@@ -167,6 +167,13 @@ export default function Hero() {
           className="w-2/3 sm:w-auto px-8 py-3.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-blue-200 dark:hover:bg-blue-900/50 hover:scale-105 active:scale-95 transition-all shadow-sm flex items-center justify-center gap-2 group"
         >
           Play Game <span className="group-hover:animate-bounce">🎮</span>
+        </Link>
+
+        <Link
+          to="/chronicles"
+          className="w-2/3 sm:w-auto px-8 py-3.5 bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-violet-200 dark:hover:bg-violet-900/50 hover:scale-105 active:scale-95 transition-all shadow-sm flex items-center justify-center gap-2 group"
+        >
+          My Chronicles <BookHeart size={14} className="group-hover:scale-125 transition-transform" />
         </Link>
       </motion.div>
 

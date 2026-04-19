@@ -9,11 +9,14 @@ import Services from './pages/Services'
 import ProjectsPage from './pages/ProjectsPage'
 import TechStack from './pages/TechStack'
 import WhyHireMe from './pages/WhyHireMe'
+import Chronicles from './pages/Chronicles'
 import AudioPlayer from './components/AudioPlayer'
+import PageLoader from './components/PageLoader'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 export default function App() {
+  const [appReady, setAppReady] = useState(false)
   const [dark, setDark] = useState(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('theme')
@@ -43,7 +46,11 @@ export default function App() {
   }
 
   return (
-    <Router>
+    <>
+      {/* Branded loading screen — renders on top, fades out after ~1.5s */}
+      {!appReady && <PageLoader onComplete={() => setAppReady(true)} />}
+
+      <Router>
       <div className={dark ? 'dark' : ''}>
         <AudioPlayer />
         <ToastContainer position="bottom-right" theme={dark ? 'dark' : 'light'} />
@@ -55,6 +62,7 @@ export default function App() {
           <Route path="/projects" element={<ProjectsPage dark={dark} toggleTheme={toggleTheme} />} />
           <Route path="/tech-stack" element={<TechStack dark={dark} toggleTheme={toggleTheme} />} />
           <Route path="/why-hire-me" element={<WhyHireMe dark={dark} toggleTheme={toggleTheme} />} />
+          <Route path="/chronicles" element={<Chronicles dark={dark} toggleTheme={toggleTheme} />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route 
             path="/admin/dashboard" 
@@ -66,7 +74,8 @@ export default function App() {
           />
         </Routes>
       </div>
-    </Router>
+      </Router>
+    </>
   )
 }
 
