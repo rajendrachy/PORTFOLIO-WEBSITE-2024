@@ -15,7 +15,8 @@ import {
   Award,
   Mail,
   ExternalLink,
-  ChevronRight
+  ChevronRight,
+  Edit
 } from 'lucide-react'
 
 export default function AdminDashboard() {
@@ -23,6 +24,7 @@ export default function AdminDashboard() {
   const [data, setData] = useState({ projects: [], stats: [], notes: [], achievements: [], messages: [] })
   const [loading, setLoading] = useState(true)
   const [showAddModal, setShowAddModal] = useState(false)
+  const [editId, setEditId] = useState(null)
   
   // Generic forms state
   const [form, setForm] = useState({})
@@ -31,6 +33,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     setForm({})
+    setEditId(null)
     fetchData()
   }, [activeTab])
 
@@ -54,14 +57,25 @@ export default function AdminDashboard() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-     await api.post(`/api/admin/${activeTab}`, form)
+      if (editId) {
+        await api.put(`/api/admin/${activeTab}/${editId}`, form)
+      } else {
+        await api.post(`/api/admin/${activeTab}`, form)
+      }
       setShowAddModal(false)
       fetchData()
       setForm({})
+      setEditId(null)
     } catch (err) { 
       console.error(err);
       alert(err.response?.data?.msg || 'Error processing request');
     }
+  }
+
+  const handleEdit = (item) => {
+    setForm(item)
+    setEditId(item._id)
+    setShowAddModal(true)
   }
 
   const handleDelete = async (id) => {
@@ -103,9 +117,14 @@ export default function AdminDashboard() {
                    <div className="w-12 h-12 bg-slate-900 dark:bg-white rounded-2xl flex items-center justify-center text-white dark:text-slate-900 shadow-xl">
                       <BarChart3 size={24} />
                    </div>
-                   <button onClick={() => handleDelete(item._id)} className="p-2 text-slate-300 hover:text-red-500 transition-colors">
-                      <Trash2 size={18} />
-                   </button>
+                   <div className="flex items-center gap-1">
+                      <button onClick={() => handleEdit(item)} className="p-2 text-slate-300 hover:text-blue-500 transition-colors">
+                         <Edit size={18} />
+                      </button>
+                      <button onClick={() => handleDelete(item._id)} className="p-2 text-slate-300 hover:text-red-500 transition-colors">
+                         <Trash2 size={18} />
+                      </button>
+                   </div>
                 </div>
                 <h3 className="text-5xl font-black dark:text-white mb-2 tracking-tighter tabular-nums">{item.number}</h3>
                 <p className="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em]">{item.label}</p>
@@ -129,9 +148,16 @@ export default function AdminDashboard() {
                 <span className="px-4 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-[10px] font-bold uppercase tracking-widest">
                   {activeTab.slice(0, -1)}
                 </span>
-                <button onClick={() => handleDelete(item._id)} className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-all">
-                  <Trash2 size={18} />
-                </button>
+                <div className="flex items-center gap-1">
+                  {activeTab !== 'messages' && (
+                    <button onClick={() => handleEdit(item)} className="p-2 text-slate-300 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/20 rounded-xl transition-all">
+                      <Edit size={18} />
+                    </button>
+                  )}
+                  <button onClick={() => handleDelete(item._id)} className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-all">
+                    <Trash2 size={18} />
+                  </button>
+                </div>
               </div>
               <h3 className="text-xl font-bold dark:text-white mb-3 tracking-tight">{item.title || item.label || item.name}</h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 mb-6 font-Ovo">
@@ -222,7 +248,11 @@ export default function AdminDashboard() {
           </div>
           {activeTab !== 'messages' && (
             <button 
-              onClick={() => setShowAddModal(true)}
+              onClick={() => {
+                setForm({})
+                setEditId(null)
+                setShowAddModal(true)
+              }}
               className="w-full md:w-auto px-8 py-4 md:px-10 md:py-5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-3xl md:rounded-[2rem] font-bold uppercase tracking-widest text-[10px] md:text-xs hover:shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 shadow-xl shadow-blue-500/20"
             >
               <Plus size={20} /> <span className="hidden sm:inline">Deploy New {activeTab.slice(0, -1)}</span>
@@ -285,7 +315,7 @@ export default function AdminDashboard() {
                exit={{ opacity: 0, scale: 0.9, y: 40 }}
                className="relative w-full max-w-2xl glass p-10 md:p-14 rounded-[4rem] shadow-2xl overflow-y-auto max-h-[90vh]"
              >
-               <h2 className="text-3xl font-black dark:text-white uppercase tracking-tighter mb-10">Construct {activeTab.slice(0, -1)}</h2>
+               <h2 className="text-3xl font-black dark:text-white uppercase tracking-tighter mb-10">{editId ? 'Update' : 'Construct'} {activeTab.slice(0, -1)}</h2>
                <form onSubmit={handleSubmit} className="space-y-8">
                  {/* Dynamic Form Generation based on tab */}
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -327,8 +357,8 @@ export default function AdminDashboard() {
                  </div>
 
                  <div className="flex flex-col md:flex-row gap-4 pt-6">
-                   <button type="button" onClick={() => setShowAddModal(false)} className="flex-1 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white font-bold uppercase text-[10px] tracking-widest hover:bg-slate-200 dark:hover:bg-white/10 transition-all">Cancel Request</button>
-                   <button type="submit" className="flex-1 py-5 rounded-3xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold uppercase text-[10px] tracking-widest shadow-2xl shadow-blue-500/20 hover:scale-[1.02] active:scale-95 transition-all">Execute Deployment ⚡</button>
+                   <button type="button" onClick={() => { setShowAddModal(false); setEditId(null); setForm({}); }} className="flex-1 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white font-bold uppercase text-[10px] tracking-widest hover:bg-slate-200 dark:hover:bg-white/10 transition-all">Cancel Request</button>
+                   <button type="submit" className="flex-1 py-5 rounded-3xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold uppercase text-[10px] tracking-widest shadow-2xl shadow-blue-500/20 hover:scale-[1.02] active:scale-95 transition-all">{editId ? 'Apply Update' : 'Execute Deployment'} ⚡</button>
                  </div>
                </form>
              </motion.div>

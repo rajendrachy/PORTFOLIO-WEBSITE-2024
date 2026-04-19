@@ -56,6 +56,17 @@ const createCrudRoutes = (model, path) => {
         res.status(500).json({ msg: 'Server Error' }); 
       }
     });
+    // UPDATE
+    router.put(`/${path}/:id`, auth, async (req, res) => {
+      try {
+        const item = await model.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!item) return res.status(404).json({ msg: 'Item not found' });
+        res.json(item);
+      } catch (err) { 
+        console.error(`Error updating ${path}:`, err);
+        res.status(500).json({ msg: 'Server Error' }); 
+      }
+    });
 };
 
 createCrudRoutes(Project, 'projects');
