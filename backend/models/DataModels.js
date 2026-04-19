@@ -39,6 +39,12 @@ const messageSchema = new mongoose.Schema({
   read: { type: Boolean, default: false },
 }, { timestamps: true });
 
+const guestbookSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  message: { type: String, required: true },
+  approved: { type: Boolean, default: false }
+}, { timestamps: true });
+
 const siteConfigSchema = new mongoose.Schema({
   heroGreeting: { type: String, default: "Hi! I'm Rajendra Chaudhary 👋" },
   heroTitle: { type: String, default: "Full Stack Web Developer" },
@@ -91,10 +97,11 @@ const Stat = mongoose.model('Stat', statSchema);
 const Note = mongoose.model('Note', noteSchema);
 const Achievement = mongoose.model('Achievement', achievementSchema);
 const Message = mongoose.model('Message', messageSchema);
+const Guestbook = mongoose.model('Guestbook', guestbookSchema);
 const SiteConfig = mongoose.model('SiteConfig', siteConfigSchema);
 const Service = mongoose.model('Service', serviceSchema);
 const Skill = mongoose.model('Skill', skillSchema);
 const BlogPost = mongoose.model('BlogPost', blogPostSchema);
 const Journey = mongoose.model('Journey', journeySchema);
 
-export { Project, Stat, Note, Achievement, Message, SiteConfig, Service, Skill, BlogPost, Journey };
+export { Project, Stat, Note, Achievement, Message, Guestbook, SiteConfig, Service, Skill, BlogPost, Journey };

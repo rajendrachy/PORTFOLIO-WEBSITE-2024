@@ -10,6 +10,7 @@ import Work from '../components/Work'
 import Achievements from '../components/Achievements'
 import Notes from '../components/Notes'
 import GitHub from '../components/GitHub'
+import Guestbook from '../components/Guestbook'
 import Contact from '../components/Contact'
 import Footer from '../components/Footer'
 import AiChat from '../components/AiChat'
@@ -107,6 +108,10 @@ export default function Home({ dark, toggleTheme }) {
 
         <motion.div {...fadeInUp}>
           <GitHub />
+        </motion.div>
+
+        <motion.div {...fadeInUp}>
+          <Guestbook />
         </motion.div>
 
         <motion.div {...fadeInUp}>

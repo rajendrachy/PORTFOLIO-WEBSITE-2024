@@ -2,7 +2,7 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
-import { Project, Stat, Note, Achievement, Message, SiteConfig, Service, Skill, BlogPost, Journey } from '../models/DataModels.js';
+import { Project, Stat, Note, Achievement, Message, SiteConfig, Service, Skill, BlogPost, Journey, Guestbook } from '../models/DataModels.js';
 import auth from '../middleware/auth.js';
 
 const router = express.Router();
@@ -77,6 +77,7 @@ createCrudRoutes(Service, 'services');
 createCrudRoutes(Skill, 'skills');
 createCrudRoutes(BlogPost, 'blogs');
 createCrudRoutes(Journey, 'journeys');
+createCrudRoutes(Guestbook, 'guestbooks');
 
 // Site Config (Singleton)
 router.get('/site-config', async (req, res) => {

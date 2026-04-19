@@ -14,6 +14,7 @@ import {
   FileText,
   Award,
   Mail,
+  MessageSquare,
   ExternalLink,
   ChevronRight,
   Edit,
@@ -24,7 +25,7 @@ import {
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('projects')
-  const [data, setData] = useState({ projects: [], stats: [], notes: [], achievements: [], messages: [] })
+  const [data, setData] = useState({ projects: [], stats: [], notes: [], achievements: [], messages: [], guestbooks: [] })
   const [loading, setLoading] = useState(true)
   const [showAddModal, setShowAddModal] = useState(false)
   const [editId, setEditId] = useState(null)
@@ -258,6 +259,11 @@ export default function AdminDashboard() {
               </div>
               <h3 className="text-xl font-bold dark:text-white mb-3 tracking-tight">{item.title || item.label || item.name}</h3>
               {item.tech && <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-2">{item.tech}</p>}
+              {activeTab === 'guestbooks' && (
+                <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${item.approved ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400'}`}>
+                  {item.approved ? 'Approved' : 'Pending Review'}
+                </span>
+              )}
               <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 mb-6 font-Ovo">
                 {item.description || item.desc || item.message}
               </p>
@@ -298,6 +304,7 @@ export default function AdminDashboard() {
             { id: 'skills', label: 'Tech Stack', icon: Layers },
             { id: 'journeys', label: 'Experience', icon: Milestone },
             { id: 'blogs', label: 'Blogs', icon: FileText },
+            { id: 'guestbooks', label: 'Guestbook', icon: MessageSquare },
             { id: 'stats', label: 'Analytics', icon: BarChart3 },
             { id: 'notes', label: 'Studies', icon: FileText },
             { id: 'achievements', label: 'Certificates', icon: Award },
@@ -387,6 +394,7 @@ export default function AdminDashboard() {
             { id: 'skills', icon: Layers },
             { id: 'journeys', icon: Milestone },
             { id: 'blogs', icon: FileText },
+            { id: 'guestbooks', icon: MessageSquare },
             { id: 'stats', icon: BarChart3 },
             { id: 'notes', icon: FileText },
             { id: 'achievements', icon: Award },
@@ -437,7 +445,7 @@ export default function AdminDashboard() {
                     <input
                       className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20 border-transparent focus:border-blue-600/30 font-bold transition-all"
                       value={form.title || form.label || form.name || ''}
-                      onChange={e => setForm({ ...form, [activeTab === 'stats' ? 'label' : (activeTab === 'messages' ? 'name' : (activeTab === 'skills' ? 'name' : 'title'))]: e.target.value })}
+                      onChange={e => setForm({ ...form, [activeTab === 'stats' ? 'label' : (activeTab === 'messages' ? 'name' : (activeTab === 'skills' || activeTab === 'guestbooks' ? 'name' : 'title'))]: e.target.value })}
                       required
                     />
                   </div>

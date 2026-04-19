@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, Sun, Moon, Sparkles } from 'lucide-react'
+import { Menu, X, Sun, Moon, Sparkles, Terminal } from 'lucide-react'
 import logo from '../assets/images/logo.png'
+import TerminalMode from './TerminalMode'
 
 export default function Navbar({ dark, toggleTheme }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
@@ -76,7 +78,16 @@ export default function Navbar({ dark, toggleTheme }) {
         </ul>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 md:gap-6">
+          <button
+            onClick={() => setIsTerminalOpen(true)}
+            className="w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-900 text-green-400 dark:bg-black border border-green-500/30 hover:bg-green-900/20 hover:scale-105 active:scale-95 transition-all shadow-xl"
+            aria-label="Open Terminal"
+            title="Terminal Mode"
+          >
+            <Terminal size={20} />
+          </button>
+
           <button
             onClick={toggleTheme}
             className="w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-all dark:text-white shadow-sm"
@@ -162,6 +173,8 @@ export default function Navbar({ dark, toggleTheme }) {
           </>
         )}
       </AnimatePresence>
+
+      <TerminalMode isOpen={isTerminalOpen} onClose={() => setIsTerminalOpen(false)} />
     </nav>
   )
 }
