@@ -468,14 +468,31 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Technical Overview / Description</label>
+                  <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">
+                    {activeTab === 'messages' || activeTab === 'guestbooks' ? 'Message Content' : 'Technical Overview / Description'}
+                  </label>
                   <textarea
                     className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20 min-h-[150px] font-Ovo"
-                    value={form.description || form.desc || ''}
-                    onChange={e => setForm({ ...form, [(activeTab === 'notes' || activeTab === 'achievements') ? 'desc' : 'description']: e.target.value })}
+                    value={form.description || form.desc || form.message || ''}
+                    onChange={e => setForm({ ...form, [(activeTab === 'notes' || activeTab === 'achievements') ? 'desc' : (activeTab === 'messages' || activeTab === 'guestbooks') ? 'message' : 'description']: e.target.value })}
                     required
                   />
                 </div>
+
+                {activeTab === 'guestbooks' && (
+                  <div className="flex items-center gap-4 px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                    <input 
+                      type="checkbox" 
+                      id="approved" 
+                      checked={form.approved || false} 
+                      onChange={e => setForm({...form, approved: e.target.checked})} 
+                      className="w-6 h-6 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer" 
+                    />
+                    <label htmlFor="approved" className="text-sm font-bold text-slate-700 dark:text-white uppercase tracking-widest cursor-pointer">
+                      Approved for Public Display
+                    </label>
+                  </div>
+                )}
 
                 <div className="flex flex-col md:flex-row gap-4 pt-6">
                   <button type="button" onClick={() => { setShowAddModal(false); setEditId(null); setForm({}); }} className="flex-1 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white font-bold uppercase text-[10px] tracking-widest hover:bg-slate-200 dark:hover:bg-white/10 transition-all">Cancel Request</button>
