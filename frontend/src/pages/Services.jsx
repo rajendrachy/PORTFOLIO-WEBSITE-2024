@@ -34,10 +34,10 @@ const services = [
   }
 ]
 
-export default function Services() {
+export default function Services({ dark, toggleTheme }) {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors selection:bg-blue-500/30">
-      <Navbar />
+      <Navbar dark={dark} toggleTheme={toggleTheme} />
       
       <main className="max-w-7xl mx-auto px-6 pt-32 pb-24">
         {/* Header */}

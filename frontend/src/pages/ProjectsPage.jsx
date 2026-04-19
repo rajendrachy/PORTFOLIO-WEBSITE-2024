@@ -6,7 +6,7 @@ import Footer from '../components/Footer'
 import { Briefcase, ExternalLink, Search, Filter } from 'lucide-react'
 import { FaGithub } from 'react-icons/fa'
 
-export default function ProjectsPage() {
+export default function ProjectsPage({ dark, toggleTheme }) {
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('All')
@@ -33,7 +33,7 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors selection:bg-blue-500/30">
-      <Navbar />
+      <Navbar dark={dark} toggleTheme={toggleTheme} />
       
       <main className="max-w-7xl mx-auto px-6 pt-32 pb-24">
         {/* Header */}

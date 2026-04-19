@@ -16,7 +16,10 @@ import {
   Mail,
   ExternalLink,
   ChevronRight,
-  Edit
+  Edit,
+  Layers,
+  Code,
+  Milestone
 } from 'lucide-react'
 
 export default function AdminDashboard() {
@@ -28,6 +31,7 @@ export default function AdminDashboard() {
   
   // Generic forms state
   const [form, setForm] = useState({})
+  const [siteConfig, setSiteConfig] = useState({})
 
   const navigate = useNavigate()
 
@@ -40,12 +44,28 @@ export default function AdminDashboard() {
   const fetchData = async () => {
     setLoading(true)
     try {
-      const res = await api.get(`/api/admin/${activeTab}`)
-      setData(prev => ({ ...prev, [activeTab]: res.data }))
+      if (activeTab === 'siteConfig') {
+        const res = await api.get('/api/admin/site-config')
+        setSiteConfig(res.data)
+      } else {
+        const res = await api.get(`/api/admin/${activeTab}`)
+        setData(prev => ({ ...prev, [activeTab]: res.data }))
+      }
     } catch (err) {
       if (err.response?.status === 401) handleLogout()
     } finally {
       setLoading(false)
+    }
+  }
+
+    const handleSiteConfigSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      await api.put('/api/admin/site-config', siteConfig)
+      alert('Site configuration updated successfully!')
+    } catch (err) {
+      console.error(err)
+      alert('Error updating site config')
     }
   }
 
@@ -94,6 +114,36 @@ export default function AdminDashboard() {
       </div>
     )
 
+        if (activeTab === 'siteConfig') {
+      return (
+        <form onSubmit={handleSiteConfigSubmit} className="space-y-6 max-w-3xl glass p-10 rounded-[3rem] border border-slate-100 dark:border-white/5">
+           <div className="space-y-2">
+              <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest">Hero Greeting</label>
+              <input className="w-full px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none" value={siteConfig.heroGreeting || ''} onChange={e => setSiteConfig({...siteConfig, heroGreeting: e.target.value})} />
+           </div>
+           <div className="space-y-2">
+              <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest">Hero Title</label>
+              <input className="w-full px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none" value={siteConfig.heroTitle || ''} onChange={e => setSiteConfig({...siteConfig, heroTitle: e.target.value})} />
+           </div>
+           <div className="space-y-2">
+              <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest">Hero Description</label>
+              <textarea className="w-full px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none min-h-[100px]" value={siteConfig.heroDescription || ''} onChange={e => setSiteConfig({...siteConfig, heroDescription: e.target.value})} />
+           </div>
+           <div className="grid grid-cols-2 gap-6">
+             <div className="space-y-2">
+                <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest">Resume Link URL</label>
+                <input className="w-full px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none" value={siteConfig.resumeLink || ''} onChange={e => setSiteConfig({...siteConfig, resumeLink: e.target.value})} />
+             </div>
+             <div className="space-y-2">
+                <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest">Contact Button Text</label>
+                <input className="w-full px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none" value={siteConfig.contactText || ''} onChange={e => setSiteConfig({...siteConfig, contactText: e.target.value})} />
+             </div>
+           </div>
+           <button type="submit" className="w-full py-4 mt-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl shadow-blue-500/20 hover:scale-[1.02] active:scale-95 transition-all">Save Global Settings</button>
+        </form>
+      )
+    }
+
     const items = data[activeTab] || []
 
     if (items.length === 0) return (
@@ -127,7 +177,19 @@ export default function AdminDashboard() {
                    </div>
                 </div>
                 <h3 className="text-5xl font-black dark:text-white mb-2 tracking-tighter tabular-nums">{item.number}</h3>
-                <p className="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em]">{item.label}</p>
+                <p className="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-4">{item.label}</p>
+                {(item.description || item.desc) && (
+                  <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 mb-4 font-Ovo">
+                    {item.description || item.desc}
+                  </p>
+                )}
+                {(item.link || item.pdfLink || item.url) && (
+                  <div className="pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
+                    <a href={item.link || item.pdfLink || item.url} target="_blank" rel="noreferrer" className="text-[10px] font-bold uppercase text-slate-600 dark:text-slate-400 hover:text-blue-600 flex items-center gap-2 transition-colors">
+                      <ExternalLink size={14} /> Open Resource
+                    </a>
+                  </div>
+                )}
               </div>
             </motion.div>
           ))}
@@ -149,7 +211,7 @@ export default function AdminDashboard() {
                   {activeTab.slice(0, -1)}
                 </span>
                 <div className="flex items-center gap-1">
-                  {activeTab !== 'messages' && (
+                  {activeTab !== 'messages' && activeTab !== 'siteConfig' && (
                     <button onClick={() => handleEdit(item)} className="p-2 text-slate-300 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/20 rounded-xl transition-all">
                       <Edit size={18} />
                     </button>
@@ -160,8 +222,9 @@ export default function AdminDashboard() {
                 </div>
               </div>
               <h3 className="text-xl font-bold dark:text-white mb-3 tracking-tight">{item.title || item.label || item.name}</h3>
+              {item.tech && <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-2">{item.tech}</p>}
               <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 mb-6 font-Ovo">
-                {item.description || item.desc || item.message || item.tech}
+                {item.description || item.desc || item.message}
               </p>
             </div>
             {item.link || item.pdfLink || item.url ? (
@@ -194,7 +257,12 @@ export default function AdminDashboard() {
 
         <nav className="flex-1 space-y-3">
           {[
+            { id: 'siteConfig', label: 'Site Config', icon: Settings },
             { id: 'projects', label: 'Projects', icon: Briefcase },
+            { id: 'services', label: 'Services', icon: Code },
+            { id: 'skills', label: 'Tech Stack', icon: Layers },
+            { id: 'journeys', label: 'Experience', icon: Milestone },
+            { id: 'blogs', label: 'Blogs', icon: FileText },
             { id: 'stats', label: 'Analytics', icon: BarChart3 },
             { id: 'notes', label: 'Studies', icon: FileText },
             { id: 'achievements', label: 'Certificates', icon: Award },
@@ -246,7 +314,7 @@ export default function AdminDashboard() {
               {activeTab}
             </h1>
           </div>
-          {activeTab !== 'messages' && (
+          {activeTab !== 'messages' && activeTab !== 'siteConfig' && (
             <button 
               onClick={() => {
                 setForm({})
@@ -277,7 +345,12 @@ export default function AdminDashboard() {
       {/* Mobile Navigation Bar */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200 dark:border-white/5 p-4 flex justify-around items-center xl:hidden z-[60] shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
         {[
+          { id: 'siteConfig', icon: Settings },
           { id: 'projects', icon: Briefcase },
+          { id: 'services', icon: Code },
+          { id: 'skills', icon: Layers },
+          { id: 'journeys', icon: Milestone },
+          { id: 'blogs', icon: FileText },
           { id: 'stats', icon: BarChart3 },
           { id: 'notes', icon: FileText },
           { id: 'achievements', icon: Award },
@@ -324,7 +397,7 @@ export default function AdminDashboard() {
                         <input 
                             className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20 border-transparent focus:border-blue-600/30 font-bold transition-all"
                             value={form.title || form.label || form.name || ''}
-                            onChange={e => setForm({...form, [activeTab === 'stats' ? 'label' : (activeTab === 'messages' ? 'name' : 'title')]: e.target.value})}
+                            onChange={e => setForm({...form, [activeTab === 'stats' ? 'label' : (activeTab === 'messages' ? 'name' : (activeTab === 'skills' ? 'name' : 'title'))]: e.target.value})}
                             required
                         />
                     </div>
@@ -351,7 +424,7 @@ export default function AdminDashboard() {
                     <textarea 
                         className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20 min-h-[150px] font-Ovo"
                         value={form.description || form.desc || ''}
-                        onChange={e => setForm({...form, [activeTab === 'notes' ? 'desc' : 'description']: e.target.value})}
+                        onChange={e => setForm({...form, [(activeTab === 'notes' || activeTab === 'achievements') ? 'desc' : 'description']: e.target.value})}
                         required
                     />
                  </div>

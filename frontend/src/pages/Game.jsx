@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { Brain, RotateCcw, User, Cpu } from 'lucide-react'
 
-export default function Game() {
+export default function Game({ dark, toggleTheme }) {
   const [board, setBoard] = useState(Array(9).fill(null))
   const [isHumanTurn, setIsHumanTurn] = useState(true)
   const [winner, setWinner] = useState(null)
@@ -131,7 +131,7 @@ export default function Game() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors selection:bg-blue-500/30">
-      <Navbar />
+      <Navbar dark={dark} toggleTheme={toggleTheme} />
       
       <main className="max-w-4xl mx-auto px-6 pt-32 pb-24 flex flex-col items-center">
         <motion.div 

@@ -2,7 +2,7 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
-import { Project, Stat, Note, Achievement, Message } from '../models/DataModels.js';
+import { Project, Stat, Note, Achievement, Message, SiteConfig, Service, Skill, BlogPost, Journey } from '../models/DataModels.js';
 import auth from '../middleware/auth.js';
 
 const router = express.Router();
@@ -73,6 +73,34 @@ createCrudRoutes(Project, 'projects');
 createCrudRoutes(Stat, 'stats');
 createCrudRoutes(Note, 'notes');
 createCrudRoutes(Achievement, 'achievements');
+createCrudRoutes(Service, 'services');
+createCrudRoutes(Skill, 'skills');
+createCrudRoutes(BlogPost, 'blogs');
+createCrudRoutes(Journey, 'journeys');
+
+// Site Config (Singleton)
+router.get('/site-config', async (req, res) => {
+  try {
+    let config = await SiteConfig.findOne();
+    if (!config) {
+      config = await SiteConfig.create({});
+    }
+    res.json(config);
+  } catch (err) { res.status(500).send('Server Error'); }
+});
+
+router.put('/site-config', auth, async (req, res) => {
+  try {
+    let config = await SiteConfig.findOne();
+    if (!config) {
+      config = new SiteConfig(req.body);
+      await config.save();
+    } else {
+      config = await SiteConfig.findByIdAndUpdate(config._id, req.body, { new: true });
+    }
+    res.json(config);
+  } catch (err) { res.status(500).send('Server Error'); }
+});
 
 // MESSAGES (Special Case)
 router.get('/messages', auth, async (req, res) => {

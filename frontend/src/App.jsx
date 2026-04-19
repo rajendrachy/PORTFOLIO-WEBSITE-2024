@@ -44,12 +44,12 @@ export default function App() {
       <div className={dark ? 'dark' : ''}>
         <Routes>
           <Route path="/" element={<Home dark={dark} toggleTheme={toggleTheme} />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/tech-stack" element={<TechStack />} />
-          <Route path="/why-hire-me" element={<WhyHireMe />} />
+          <Route path="/game" element={<Game dark={dark} toggleTheme={toggleTheme} />} />
+          <Route path="/blog" element={<Blog dark={dark} toggleTheme={toggleTheme} />} />
+          <Route path="/services" element={<Services dark={dark} toggleTheme={toggleTheme} />} />
+          <Route path="/projects" element={<ProjectsPage dark={dark} toggleTheme={toggleTheme} />} />
+          <Route path="/tech-stack" element={<TechStack dark={dark} toggleTheme={toggleTheme} />} />
+          <Route path="/why-hire-me" element={<WhyHireMe dark={dark} toggleTheme={toggleTheme} />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route 
             path="/admin/dashboard" 
