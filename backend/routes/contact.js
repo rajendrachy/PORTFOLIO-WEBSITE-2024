@@ -55,6 +55,10 @@ router.post("/", async (req, res) => {
       console.log(`📧 Email notification sent for message from: ${name}`);
     }
 
+    if (req.io) {
+      req.io.emit('new_notification', { type: 'inquiry', title: 'New Message', message: `${name} sent you a message: ${message.substring(0, 30)}...` });
+    }
+
     console.log(`📩 New message saved from: ${name} (${email})`);
 
     res.status(200).json({

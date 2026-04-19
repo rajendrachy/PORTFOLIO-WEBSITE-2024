@@ -9,6 +9,8 @@ import Services from './pages/Services'
 import ProjectsPage from './pages/ProjectsPage'
 import TechStack from './pages/TechStack'
 import WhyHireMe from './pages/WhyHireMe'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function App() {
   const [dark, setDark] = useState(() => {
@@ -42,6 +44,7 @@ export default function App() {
   return (
     <Router>
       <div className={dark ? 'dark' : ''}>
+        <ToastContainer position="bottom-right" theme={dark ? 'dark' : 'light'} />
         <Routes>
           <Route path="/" element={<Home dark={dark} toggleTheme={toggleTheme} />} />
           <Route path="/game" element={<Game dark={dark} toggleTheme={toggleTheme} />} />

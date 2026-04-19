@@ -20,8 +20,12 @@ import {
   Edit,
   Layers,
   Code,
-  Milestone
+  Milestone,
+  Activity
 } from 'lucide-react'
+import { io } from 'socket.io-client'
+import { toast } from 'react-toastify'
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('projects')
@@ -40,6 +44,29 @@ export default function AdminDashboard() {
     setForm({})
     setEditId(null)
     fetchData()
+  }, [activeTab])
+
+  useEffect(() => {
+    // Connect to WebSockets for real-time notifications
+    const socketUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+    const socket = io(socketUrl)
+
+    socket.on('new_notification', (notification) => {
+      toast.info(`🔔 ${notification.title}: ${notification.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark"
+      });
+      // Try to refresh current tab data if it matches
+      if (notification.type === 'inquiry' && activeTab === 'messages') fetchData()
+      if (notification.type === 'guestbook' && activeTab === 'guestbooks') fetchData()
+    })
+
+    return () => socket.disconnect()
   }, [activeTab])
 
   const fetchData = async () => {
@@ -189,46 +216,99 @@ export default function AdminDashboard() {
     )
 
     if (activeTab === 'stats') {
+      // Mock data for beautiful visualization (in a real app, this would be aggregated from DB)
+      const chartData = [
+        { name: 'Day 1', Inquiries: 1, Visitors: 40 },
+        { name: 'Day 2', Inquiries: 2, Visitors: 30 },
+        { name: 'Day 3', Inquiries: 0, Visitors: 55 },
+        { name: 'Day 4', Inquiries: 4, Visitors: 80 },
+        { name: 'Day 5', Inquiries: 1, Visitors: 45 },
+        { name: 'Day 6', Inquiries: 3, Visitors: 60 },
+        { name: 'Day 7', Inquiries: 5, Visitors: 90 },
+      ]
+
       return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {items.map((item) => (
-            <motion.div
-              layout
-              key={item._id}
-              className="glass p-10 rounded-[3rem] border-slate-100 dark:border-white/5 relative overflow-hidden group hover:shadow-2xl transition-all"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-blue-600/10 transition-colors" />
-              <div className="relative z-10">
-                <div className="flex justify-between items-start mb-8">
-                  <div className="w-12 h-12 bg-slate-900 dark:bg-white rounded-2xl flex items-center justify-center text-white dark:text-slate-900 shadow-xl">
-                    <BarChart3 size={24} />
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <button onClick={() => handleEdit(item)} className="p-2 text-slate-300 hover:text-blue-500 transition-colors">
-                      <Edit size={18} />
-                    </button>
-                    <button onClick={() => handleDelete(item._id)} className="p-2 text-slate-300 hover:text-red-500 transition-colors">
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
-                </div>
-                <h3 className="text-5xl font-black dark:text-white mb-2 tracking-tighter tabular-nums">{item.number}</h3>
-                <p className="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-4">{item.label}</p>
-                {(item.description || item.desc) && (
-                  <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 mb-4 font-Ovo">
-                    {item.description || item.desc}
-                  </p>
-                )}
-                {(item.link || item.pdfLink || item.url) && (
-                  <div className="pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
-                    <a href={item.link || item.pdfLink || item.url} target="_blank" rel="noreferrer" className="text-[10px] font-bold uppercase text-slate-600 dark:text-slate-400 hover:text-blue-600 flex items-center gap-2 transition-colors">
-                      <ExternalLink size={14} /> Open Resource
-                    </a>
-                  </div>
-                )}
+        <div className="space-y-12">
+          {/* Analytics Visualization */}
+          <div className="glass p-8 md:p-10 rounded-[3rem] border border-slate-100 dark:border-white/5 shadow-2xl">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white shadow-lg">
+                <Activity size={24} />
               </div>
-            </motion.div>
-          ))}
+              <div>
+                <h3 className="text-2xl font-black dark:text-white tracking-tight">Traffic & Interactions</h3>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Last 7 Days Overview</p>
+              </div>
+            </div>
+
+            <div className="w-full h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorInquiries" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', borderRadius: '1rem', border: 'none', color: '#fff' }}
+                    itemStyle={{ color: '#fff' }}
+                  />
+                  <Area type="monotone" dataKey="Visitors" stroke="#8b5cf6" strokeWidth={3} fillOpacity={1} fill="url(#colorVisitors)" />
+                  <Area type="monotone" dataKey="Inquiries" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorInquiries)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Metric Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {items.map((item) => (
+              <motion.div
+                layout
+                key={item._id}
+                className="glass p-10 rounded-[3rem] border-slate-100 dark:border-white/5 relative overflow-hidden group hover:shadow-2xl transition-all"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-blue-600/10 transition-colors" />
+                <div className="relative z-10">
+                  <div className="flex justify-between items-start mb-8">
+                    <div className="w-12 h-12 bg-slate-900 dark:bg-white rounded-2xl flex items-center justify-center text-white dark:text-slate-900 shadow-xl">
+                      <BarChart3 size={24} />
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <button onClick={() => handleEdit(item)} className="p-2 text-slate-300 hover:text-blue-500 transition-colors">
+                        <Edit size={18} />
+                      </button>
+                      <button onClick={() => handleDelete(item._id)} className="p-2 text-slate-300 hover:text-red-500 transition-colors">
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </div>
+                  <h3 className="text-5xl font-black dark:text-white mb-2 tracking-tighter tabular-nums">{item.number}</h3>
+                  <p className="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-4">{item.label}</p>
+                  {(item.description || item.desc) && (
+                    <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 mb-4 font-Ovo">
+                      {item.description || item.desc}
+                    </p>
+                  )}
+                  {(item.link || item.pdfLink || item.url) && (
+                    <div className="pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
+                      <a href={item.link || item.pdfLink || item.url} target="_blank" rel="noreferrer" className="text-[10px] font-bold uppercase text-slate-600 dark:text-slate-400 hover:text-blue-600 flex items-center gap-2 transition-colors">
+                        <ExternalLink size={14} /> Open Resource
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       )
     }
@@ -314,8 +394,8 @@ export default function AdminDashboard() {
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center justify-between px-8 py-5 rounded-3xl font-bold uppercase tracking-widest text-[11px] transition-all group ${activeTab === item.id
-                  ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-950 shadow-2xl scale-[1.02]'
-                  : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-white/5'
+                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-950 shadow-2xl scale-[1.02]'
+                : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-white/5'
                 }`}
             >
               <div className="flex items-center gap-4">
@@ -404,8 +484,8 @@ export default function AdminDashboard() {
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`p-3 shrink-0 rounded-2xl transition-all ${activeTab === item.id
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/40 scale-110 mx-1'
-                  : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/40 scale-110 mx-1'
+                : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5'
                 }`}
             >
               <item.icon size={20} />
@@ -481,12 +561,12 @@ export default function AdminDashboard() {
 
                 {activeTab === 'guestbooks' && (
                   <div className="flex items-center gap-4 px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
-                    <input 
-                      type="checkbox" 
-                      id="approved" 
-                      checked={form.approved || false} 
-                      onChange={e => setForm({...form, approved: e.target.checked})} 
-                      className="w-6 h-6 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer" 
+                    <input
+                      type="checkbox"
+                      id="approved"
+                      checked={form.approved || false}
+                      onChange={e => setForm({ ...form, approved: e.target.checked })}
+                      className="w-6 h-6 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                     />
                     <label htmlFor="approved" className="text-sm font-bold text-slate-700 dark:text-white uppercase tracking-widest cursor-pointer">
                       Approved for Public Display
