@@ -53,7 +53,7 @@ export default function TerminalMode({ isOpen, onClose }) {
         output = projects.map(p => `- ${p.title} (${p.tech})`).join('\n')
       }
     } else if (trimmed === 'contact') {
-      output = 'Email: rajendrachaudhary@example.com\nGitHub: github.com/rajendrachy\nLocation: Nepal'
+      output = 'Email: chyrajendra32@gmail.com\nGitHub: github.com/rajendrachy\nLocation: Nepal'
     } else if (trimmed === 'clear') {
       setHistory([])
       return
