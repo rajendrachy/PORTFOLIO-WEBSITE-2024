@@ -110,7 +110,7 @@ export default function TerminalMode({ isOpen, onClose }) {
                   {entry.command && (
                     <div className="flex gap-2">
                       <span className="text-blue-400">rajendra@portfolio:~$</span>
-                      <span className="text-white">{entry.command}</span>
+                      <span className="!text-white">{entry.command}</span>
                     </div>
                   )}
                   {entry.output && (
@@ -127,7 +127,7 @@ export default function TerminalMode({ isOpen, onClose }) {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  className="flex-1 bg-transparent outline-none text-white font-mono"
+                  className="flex-1 bg-transparent outline-none !text-white font-mono"
                   autoComplete="off"
                   spellCheck="false"
                 />
