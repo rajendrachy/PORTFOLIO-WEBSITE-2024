@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../utils/api'
 import { motion } from 'framer-motion'
 import { LogIn, User, Lock, AlertCircle, ArrowLeft } from 'lucide-react'
-
-const API_URL = import.meta.env.VITE_API_URL || ''
 
 export default function AdminLogin() {
   const [username, setUsername] = useState('')
@@ -18,7 +16,7 @@ export default function AdminLogin() {
     setLoading(true)
     setError('')
     try {
-      const res = await axios.post(`${API_URL}/api/admin/login`, { username, password })
+      const res = await api.post('/api/admin/login', { username, password })
       localStorage.setItem('adminToken', res.data.token)
       navigate('/admin/dashboard')
     } catch (err) {

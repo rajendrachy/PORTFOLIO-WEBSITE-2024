@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import axios from 'axios'
+import api from '../utils/api'
 import certIcon from '../assets/images/certificate.jpg'
 
 export default function Achievements() {
@@ -11,7 +11,7 @@ export default function Achievements() {
   useEffect(() => {
     const fetchAchievements = async () => {
       try {
-        const res = await axios.get('/api/admin/achievements')
+        const res = await api.get('/api/admin/achievements')
         // If DB is empty, use seed-like defaults but prefix with assets/
         if (res.data.length === 0) {
            setAchievements([

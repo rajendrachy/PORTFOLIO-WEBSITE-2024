@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../utils/api'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Plus, 
@@ -18,8 +18,6 @@ import {
   ChevronRight
 } from 'lucide-react'
 
-const API_URL = import.meta.env.VITE_API_URL || ''
-
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('projects')
   const [data, setData] = useState({ projects: [], stats: [], notes: [], achievements: [], messages: [] })
@@ -32,14 +30,14 @@ export default function AdminDashboard() {
   const navigate = useNavigate()
 
   useEffect(() => {
+    setForm({})
     fetchData()
   }, [activeTab])
 
   const fetchData = async () => {
     setLoading(true)
     try {
-      const token = localStorage.getItem('adminToken')
-      const res = await axios.get(`${API_URL}/api/admin/${activeTab}`, { headers: { 'x-auth-token': token } })
+      const res = await api.get(`/api/admin/${activeTab}`)
       setData(prev => ({ ...prev, [activeTab]: res.data }))
     } catch (err) {
       if (err.response?.status === 401) handleLogout()
@@ -56,19 +54,20 @@ export default function AdminDashboard() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const token = localStorage.getItem('adminToken')
-      await axios.post(`${API_URL}/api/admin/${activeTab}`, form, { headers: { 'x-auth-token': token } })
+     await api.post(`/api/admin/${activeTab}`, form)
       setShowAddModal(false)
       fetchData()
       setForm({})
-    } catch (err) { alert('Error processing request') }
+    } catch (err) { 
+      console.error(err);
+      alert(err.response?.data?.msg || 'Error processing request');
+    }
   }
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to permanently delete this record?')) return
     try {
-      const token = localStorage.getItem('adminToken')
-      await axios.delete(`${API_URL}/api/admin/${activeTab}/${id}`, { headers: { 'x-auth-token': token } })
+     await api.delete(`/api/admin/${activeTab}/${id}`)
       fetchData()
     } catch (err) { alert('Error deleting') }
   }

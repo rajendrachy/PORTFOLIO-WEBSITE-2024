@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import axios from 'axios'
+import api from '../utils/api'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { Briefcase, ExternalLink, Search, Filter } from 'lucide-react'
@@ -14,7 +14,7 @@ export default function ProjectsPage() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await axios.get('/api/admin/projects')
+        const res = await api.get('/api/admin/projects')
         setProjects(res.data)
       } catch (err) {
         console.error('Error fetching projects:', err)

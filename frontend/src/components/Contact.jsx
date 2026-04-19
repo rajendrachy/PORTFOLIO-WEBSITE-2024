@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import api from '../utils/api'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
@@ -30,31 +31,11 @@ export default function Contact() {
     setErrorMessage('')
 
     try {
-      // 2. Transmit to Backend (MongoDB storage for Admin Page)
-      const dbResponse = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      })
-      
-      // 3. Transmit to EmailJS (Direct Email Notification)
-      const emailjsResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          service_id: 'default_service', // Automatically targets the single linked service attached to chyrajendra32@gmail.com
-          template_id: 'template_26v214d',
-          user_id: 'MpW4TYxXkBOvyjLB2',
-          template_params: {
-            from_name: form.name,
-            from_email: form.email,
-            message: form.message,
-            reply_to: form.email
-          }
-        }),
-      })
+      // 2. Transmit to Backend (MongoDB storage + Email Notification)
+      const dbResponse = await api.post('/api/contact', form)
+      const dbOk = dbResponse.status === 200 || dbResponse.status === 201;
 
-      if (dbResponse.ok) {
+      if (dbOk) {
         setStatus('success')
         setForm({ name: '', email: '', message: '' })
         setTimeout(() => setStatus(null), 5000)

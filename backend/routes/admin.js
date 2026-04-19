@@ -40,14 +40,21 @@ const createCrudRoutes = (model, path) => {
         const newItem = new model(req.body);
         const item = await newItem.save();
         res.json(item);
-      } catch (err) { res.status(500).send('Server Error'); }
+      } catch (err) { 
+        console.error(`Error creating ${path}:`, err);
+        res.status(500).json({ msg: 'Failed to save data', error: err.message }); 
+      }
     });
     // DELETE
     router.delete(`/${path}/:id`, auth, async (req, res) => {
       try {
-        await model.findByIdAndDelete(req.params.id);
+        const item = await model.findByIdAndDelete(req.params.id);
+        if (!item) return res.status(404).json({ msg: 'Item not found' });
         res.json({ msg: 'Item removed' });
-      } catch (err) { res.status(500).send('Server Error'); }
+      } catch (err) { 
+        console.error(`Error deleting ${path}:`, err);
+        res.status(500).json({ msg: 'Server Error' }); 
+      }
     });
 };
 

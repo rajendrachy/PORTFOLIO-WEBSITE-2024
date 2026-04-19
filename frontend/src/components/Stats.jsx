@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import axios from 'axios'
+import api from '../utils/api'
 
 export default function Stats() {
   const [stats, setStats] = useState([])
@@ -9,7 +9,7 @@ export default function Stats() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get('/api/admin/stats')
+        const res = await api.get('/api/admin/stats')
         setStats(res.data)
       } catch (err) {
         console.error('Error fetching stats:', err)

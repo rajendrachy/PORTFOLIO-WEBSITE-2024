@@ -12,7 +12,20 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+
+
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://portfolio-website-2024-zeta.vercel.app",
+    "https://rajendrachaudhary32.com.np"
+  ],
+  methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Database Connection - Prioritizing Mongo Atlas from .env

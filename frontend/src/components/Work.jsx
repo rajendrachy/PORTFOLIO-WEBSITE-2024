@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
+import api from '../utils/api'
 import { ExternalLink, ArrowRight, Sparkles, X, LayoutTemplate } from 'lucide-react'
 
 export default function Work() {
@@ -12,7 +12,7 @@ export default function Work() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await axios.get('/api/admin/projects')
+        const res = await api.get('/api/admin/projects')
         setProjects(res.data.slice(0, 3)) // Only show top 3 on Home
       } catch (err) {
         console.error('Error fetching projects:', err)
