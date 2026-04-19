@@ -67,7 +67,7 @@ export default function AudioPlayer() {
 
     audio.pause();
     audio.currentTime = 0;
-    audio.src = PLAYLIST[currentIndex].url; // set src imperatively
+    audio.src = PLAYLIST[currentIndex].url;
     audio.volume = 0.3;
     audio.muted = isMuted;
     audio.load();
@@ -75,7 +75,6 @@ export default function AudioPlayer() {
     setTitleKey(prev => prev + 1);
 
     if (isPlayingRef.current) {
-      // Small delay lets the browser buffer before playing
       const timer = setTimeout(() => {
         audio.play().catch(err => console.warn('Autoplay blocked:', err));
       }, 100);
@@ -111,39 +110,60 @@ export default function AudioPlayer() {
     setCurrentIndex(prev => (prev - 1 + PLAYLIST.length) % PLAYLIST.length);
   };
 
-  // Auto-advance when a song finishes
   const handleEnded = () => {
     playNext();
   };
 
+  // Prevent button pointer-down from starting a drag gesture
+  const stopDrag = (e) => e.stopPropagation();
+
   return (
     <motion.div
+      drag
+      dragMomentum={false}
+      dragElastic={0.08}
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1, duration: 0.8 }}
-      className="fixed bottom-6 left-6 z-[100] flex items-center gap-2 px-3 py-3 glass rounded-full shadow-2xl border border-white/20 dark:border-white/10"
+      whileDrag={{ scale: 1.05, boxShadow: '0 28px 56px rgba(0,0,0,0.4)' }}
+      className="fixed bottom-6 left-6 z-[100] flex items-center gap-2 px-3 py-3 glass rounded-full shadow-2xl border border-white/20 dark:border-white/10 select-none"
+      style={{ touchAction: 'none', cursor: 'grab' }}
     >
-      {/* Audio element — src managed imperatively via useEffect */}
-      <audio
-        ref={audioRef}
-        onEnded={handleEnded}
-        preload="auto"
-      />
+      {/* Audio element */}
+      <audio ref={audioRef} onEnded={handleEnded} preload="auto" />
+
+      {/* ⠿ Drag handle — 3×2 dot grid */}
+      <div
+        className="flex flex-col gap-[3px] px-0.5 flex-shrink-0 text-slate-400 dark:text-slate-500 hover:text-blue-400 dark:hover:text-blue-400 transition-colors"
+        title="Drag to move"
+        style={{ cursor: 'grab' }}
+      >
+        {[0, 1, 2].map(row => (
+          <div key={row} className="flex gap-[3px]">
+            <div className="w-[3px] h-[3px] rounded-full bg-current" />
+            <div className="w-[3px] h-[3px] rounded-full bg-current" />
+          </div>
+        ))}
+      </div>
 
       {/* ⏮ Prev */}
       <button
+        onPointerDown={stopDrag}
         onClick={playPrev}
         title="Previous song"
         className="w-8 h-8 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 flex items-center justify-center transition-colors rounded-full"
+        style={{ cursor: 'pointer' }}
       >
         <SkipBack size={16} fill="currentColor" />
       </button>
 
       {/* ▶ / ⏸ Play / Pause */}
       <button
+        onPointerDown={stopDrag}
         onClick={togglePlay}
         title={isPlaying ? 'Pause' : 'Play'}
         className="w-11 h-11 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center transition-all shadow-lg shadow-blue-500/30 flex-shrink-0"
+        style={{ cursor: 'pointer' }}
       >
         {isPlaying
           ? <Pause size={18} fill="currentColor" />
@@ -152,9 +172,11 @@ export default function AudioPlayer() {
 
       {/* ⏭ Next */}
       <button
+        onPointerDown={stopDrag}
         onClick={playNext}
         title="Next song"
         className="w-8 h-8 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 flex items-center justify-center transition-colors rounded-full"
+        style={{ cursor: 'pointer' }}
       >
         <SkipForward size={16} fill="currentColor" />
       </button>
@@ -205,9 +227,11 @@ export default function AudioPlayer() {
 
       {/* 🔇 / 🔊 Mute */}
       <button
+        onPointerDown={stopDrag}
         onClick={toggleMute}
         title={isMuted ? 'Unmute' : 'Mute'}
         className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors flex-shrink-0"
+        style={{ cursor: 'pointer' }}
       >
         {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
       </button>
