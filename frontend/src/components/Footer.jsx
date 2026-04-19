@@ -30,7 +30,7 @@ export default function Footer() {
               <span className="text-3xl font-black uppercase tracking-tighter dark:text-white">Rajendra</span>
             </Link>
             <p className="max-w-md text-slate-500 dark:text-slate-400 font-Ovo text-lg leading-relaxed">
-              Engineering high-performance digital solutions with a focus on MERN stack and DevOps excellence. Based in the heart of Nepal, serving the global web.
+              Engineering high-performance digital solutions with a focus on MERN stack and Software Engineering excellence. Based in Nepal, serving the global web.
             </p>
             <div className="flex gap-4">
               {socialLinks.map((social) => (

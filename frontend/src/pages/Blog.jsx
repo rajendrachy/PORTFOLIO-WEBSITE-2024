@@ -83,7 +83,7 @@ export default function Blog({ dark, toggleTheme }) {
              transition={{ delay: 0.2 }}
              className="max-w-2xl mx-auto text-slate-500 dark:text-slate-400 font-Ovo text-lg tracking-wide"
            >
-             Sharing my insights, experiences, and deep dives into the world of Web Development, DevOps, and modern Software Engineering.
+             Sharing my insights, experiences, and deep dives into the world of Web Development and modern Software Engineering.
            </motion.p>
         </div>
 

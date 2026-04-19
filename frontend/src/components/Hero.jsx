@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import profileImg from '../assets/images/profiles.jpeg'
 import { useTranslation } from 'react-i18next'
+import { MapPin, Home, ChevronDown } from 'lucide-react'
 
-const strings = ['Full Stack Web Developer', 'Software Engineer']
+const strings = ['Full Stack Web Developer', 'Software Engineer', 'MERN Stack Developer']
 
 export default function Hero() {
   const [index, setIndex] = useState(0)
@@ -39,11 +40,13 @@ export default function Hero() {
 
   return (
     <div className="w-full max-w-4xl px-6 flex flex-col items-center text-center">
+
+      {/* ── Profile Image ── */}
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="relative mb-8"
+        className="relative mb-6"
       >
         <div className="absolute inset-0 bg-blue-500/20 blur-2xl rounded-full scale-110 -z-10" />
         <img
@@ -51,17 +54,72 @@ export default function Hero() {
           alt="Rajendra Chaudhary"
           className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover shadow-2xl ring-4 ring-white/10"
         />
+        {/* Online indicator on avatar */}
+        <span className="absolute bottom-2 right-2 md:bottom-3 md:right-3 w-4 h-4 md:w-5 md:h-5 bg-green-500 rounded-full border-2 border-white dark:border-slate-900 shadow-lg">
+          <span className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-75" />
+        </span>
       </motion.div>
 
-      <motion.h3 
+      {/* ── "Open to Work" badge ── */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.15, duration: 0.5, type: 'spring', stiffness: 200 }}
+        className="mb-4 inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-500/30 rounded-full shadow-sm"
+      >
+        {/* Pulsing dot */}
+        <span className="relative flex h-2.5 w-2.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
+        </span>
+        <span className="text-[11px] font-bold uppercase tracking-widest text-green-700 dark:text-green-400">
+          Open to Work
+        </span>
+        <span className="hidden sm:inline-block text-[10px] text-green-600/70 dark:text-green-500/60 font-medium">
+          — Internship · Freelance · Full-Time
+        </span>
+      </motion.div>
+
+      {/* ── Location row ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+        className="mb-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5"
+      >
+        {/* Current location */}
+        <span className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
+          <MapPin size={12} className="text-blue-500 flex-shrink-0" />
+          <span>Currently in</span>
+          <span className="font-bold text-slate-700 dark:text-slate-200">
+            Himachal Pradesh, India 🇮🇳
+          </span>
+        </span>
+
+        {/* Divider dot */}
+        <span className="hidden sm:block w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600" />
+
+        {/* Hometown */}
+        <span className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
+          <Home size={12} className="text-orange-400 flex-shrink-0" />
+          <span>Hometown</span>
+          <span className="font-bold text-slate-700 dark:text-slate-200">
+            Nepal 🇳🇵
+          </span>
+        </span>
+      </motion.div>
+
+      {/* ── Greeting ── */}
+      <motion.h3
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+        transition={{ delay: 0.35 }}
         className="mb-3 text-lg md:text-2xl font-Ovo text-gray-500 dark:text-gray-400"
       >
         {t('hero_hi')} 👋
       </motion.h3>
 
+      {/* ── Typewriter headline ── */}
       <h1 className="h-[80px] md:h-[140px] font-Ovo leading-tight">
         <span className="text-black dark:text-white">{displayText}</span>
         <motion.span
@@ -71,7 +129,8 @@ export default function Hero() {
         />
       </h1>
 
-      <motion.p 
+      {/* ── Description ── */}
+      <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
@@ -80,7 +139,8 @@ export default function Hero() {
         {t('hero_desc')}
       </motion.p>
 
-      <motion.div 
+      {/* ── CTA Buttons ── */}
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
@@ -108,6 +168,22 @@ export default function Hero() {
         >
           Play Game <span className="group-hover:animate-bounce">🎮</span>
         </Link>
+      </motion.div>
+
+      {/* ── Scroll indicator ── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4 }}
+        className="mt-14 flex flex-col items-center gap-1 text-slate-400 dark:text-slate-600"
+      >
+        <span className="text-[9px] uppercase tracking-[0.25em] font-bold">Scroll</span>
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <ChevronDown size={18} />
+        </motion.div>
       </motion.div>
     </div>
   )

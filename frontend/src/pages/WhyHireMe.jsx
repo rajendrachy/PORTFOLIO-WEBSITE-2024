@@ -27,7 +27,7 @@ const reasons = [
   },
   {
     title: 'Full-Stack Synergy',
-    desc: 'With deep expertise in both Frontend (React) and Backend (Node.js/DevOps), I provide end-to-end development that ensures perfect integration.',
+    desc: 'With deep expertise in both Frontend (React) and Backend (Node.js), I provide end-to-end full-stack development that ensures perfect integration.',
     icon: CloudLightning,
     color: 'text-green-500',
     bg: 'bg-green-100 dark:bg-green-900/30'

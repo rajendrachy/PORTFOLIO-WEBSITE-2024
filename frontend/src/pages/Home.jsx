@@ -62,7 +62,7 @@ export default function Home({ dark, toggleTheme }) {
             Let's Build Something Amazing 🚀
           </h2>
           <p className="max-w-2xl mx-auto mb-10 text-gray-600 dark:text-gray-300">
-            I specialize in building scalable full-stack applications and deploying them with modern DevOps practices.
+            I specialize in building scalable full-stack applications with clean architecture and modern Software Engineering practices.
             I'm currently looking for roles where I can contribute to impactful software.
           </p>
           
