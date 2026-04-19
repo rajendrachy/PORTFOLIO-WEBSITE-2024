@@ -49,6 +49,9 @@ const siteConfigSchema = new mongoose.Schema({
   aboutLanguages: { type: String, default: "JS, Node, Java, C++" },
   aboutEducation: { type: String, default: "B.E. Computer Science" },
   aboutProjects: { type: String, default: "4+ Major Full-Stack Apps" },
+  githubUsername: { type: String, default: "rajendrachy" },
+  githubRepos: { type: String, default: "60+" },
+  githubCommits: { type: String, default: "500+" },
 }, { timestamps: true });
 
 const serviceSchema = new mongoose.Schema({
