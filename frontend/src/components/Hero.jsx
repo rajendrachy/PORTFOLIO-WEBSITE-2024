@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import profileImg from '../assets/images/profiles.jpeg'
+import { useTranslation } from 'react-i18next'
 
 const strings = ['Full Stack Web Developer', 'Software Engineer']
 
@@ -10,6 +11,7 @@ export default function Hero() {
   const [displayText, setDisplayText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
   const [speed, setSpeed] = useState(100)
+  const { t } = useTranslation()
 
   useEffect(() => {
     const handleTyping = () => {
@@ -57,7 +59,7 @@ export default function Hero() {
         transition={{ delay: 0.2 }}
         className="mb-3 text-lg md:text-2xl font-Ovo text-gray-500 dark:text-gray-400"
       >
-        Hi! I'm <span className="text-gray-900 dark:text-white font-semibold">Rajendra Chaudhary</span> 👋
+        {t('hero_hi')} 👋
       </motion.h3>
 
       <h1 className="h-[80px] md:h-[140px] font-Ovo leading-tight">
@@ -75,8 +77,7 @@ export default function Hero() {
         transition={{ delay: 0.5 }}
         className="max-w-2xl mx-auto mb-10 text-gray-600 dark:text-gray-400 font-Ovo leading-relaxed text-sm md:text-base"
       >
-        I am a Full Stack Web | Software Developer from Nepal,
-        specializing in building scalable, secure web applications and robust infrastructure.
+        {t('hero_desc')}
       </motion.p>
 
       <motion.div 
@@ -89,16 +90,15 @@ export default function Hero() {
           href="#contact"
           className="w-2/3 sm:w-auto px-8 py-3.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center gap-2 hover:bg-gray-800 dark:hover:bg-gray-100 transition-all font-bold text-xs uppercase tracking-widest group"
         >
-          Contact me
+          {t('nav_contact')}
           <span className="material-icons-outlined text-sm group-hover:translate-x-1 transition-transform">east</span>
         </a>
 
         <a
-          href="/resume.pdf"
-          download
+          href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/resume/download`}
           className="w-2/3 sm:w-auto px-8 py-3.5 border border-gray-300 dark:border-white/20 rounded-full flex items-center justify-center gap-2 bg-white/50 dark:bg-white/5 backdrop-blur-sm hover:bg-white/80 dark:hover:bg-white/10 transition-all font-bold text-xs uppercase tracking-widest"
         >
-          Get Resume
+          {t('btn_resume')}
           <span className="material-icons-outlined text-sm">download</span>
         </a>
 

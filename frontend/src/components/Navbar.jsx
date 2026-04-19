@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, Sun, Moon, Sparkles, Terminal } from 'lucide-react'
+import { Menu, X, Sun, Moon, Sparkles, Terminal, Languages } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import logo from '../assets/images/logo.png'
 import TerminalMode from './TerminalMode'
 
@@ -10,6 +11,12 @@ export default function Navbar({ dark, toggleTheme }) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isTerminalOpen, setIsTerminalOpen] = useState(false)
   const location = useLocation()
+  const { t, i18n } = useTranslation()
+
+  const toggleLanguage = () => {
+    const nextLng = i18n.language === 'en' ? 'ne' : 'en'
+    i18n.changeLanguage(nextLng)
+  }
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50)
@@ -18,12 +25,12 @@ export default function Navbar({ dark, toggleTheme }) {
   }, [])
 
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Services', href: '/services' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Knowledge', href: '/blog' },
-    { name: 'Tech Stack', href: '/tech-stack' },
-    { name: 'Contact', href: '/#contact' },
+    { name: t('nav_home'), href: '/' },
+    { name: t('nav_services'), href: '/services' },
+    { name: t('nav_projects'), href: '/projects' },
+    { name: t('nav_blog'), href: '/blog' },
+    { name: t('nav_tech_stack'), href: '/tech-stack' },
+    { name: t('nav_contact'), href: '/#contact' },
   ]
 
   const isHome = location.pathname === '/'
@@ -86,6 +93,14 @@ export default function Navbar({ dark, toggleTheme }) {
             title="Terminal Mode"
           >
             <Terminal size={20} />
+          </button>
+
+          <button
+            onClick={toggleLanguage}
+            className="w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-all dark:text-white shadow-sm font-bold text-xs"
+            title="Switch Language"
+          >
+            {i18n.language === 'en' ? 'NE' : 'EN'}
           </button>
 
           <button

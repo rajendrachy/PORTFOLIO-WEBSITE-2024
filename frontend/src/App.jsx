@@ -9,6 +9,7 @@ import Services from './pages/Services'
 import ProjectsPage from './pages/ProjectsPage'
 import TechStack from './pages/TechStack'
 import WhyHireMe from './pages/WhyHireMe'
+import AudioPlayer from './components/AudioPlayer'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -44,6 +45,7 @@ export default function App() {
   return (
     <Router>
       <div className={dark ? 'dark' : ''}>
+        <AudioPlayer />
         <ToastContainer position="bottom-right" theme={dark ? 'dark' : 'light'} />
         <Routes>
           <Route path="/" element={<Home dark={dark} toggleTheme={toggleTheme} />} />

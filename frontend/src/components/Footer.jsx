@@ -2,8 +2,10 @@ import { Link } from 'react-router-dom'
 import logo from '../assets/images/logo.png'
 import { ArrowUp, Heart } from 'lucide-react'
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
+import { useTranslation } from 'react-i18next'
 
 export default function Footer() {
+  const { t } = useTranslation()
   const socialLinks = [
     { name: 'GitHub', href: 'https://github.com/rajendrachy', icon: FaGithub },
     { name: 'LinkedIn', href: 'https://www.linkedin.com/in/rajendra1617/', icon: FaLinkedin },
@@ -72,7 +74,7 @@ export default function Footer() {
         <div className="pt-12 border-t border-slate-200 dark:border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400 flex items-center gap-2">
             © {new Date().getFullYear()} Rajendra Chaudhary <span className="text-slate-200 dark:text-white/10">|</span> 
-            Handcrafted with <Heart size={10} className="text-red-500 fill-red-500" /> & React
+            {t('footer_handcrafted')} <Heart size={10} className="text-red-500 fill-red-500" /> & React
           </div>
           
           <button 

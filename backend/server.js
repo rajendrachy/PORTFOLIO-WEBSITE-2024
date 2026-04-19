@@ -9,6 +9,7 @@ import { Guestbook } from './models/DataModels.js';
 import http from 'http';
 import { Server } from 'socket.io';
 import rateLimit from 'express-rate-limit';
+import resumeRoutes from './routes/resume.js';
 
 dotenv.config();
 
@@ -74,6 +75,7 @@ mongoose.connect(mongoURI)
 app.use('/chat', apiLimiter, chatRoutes);
 app.use('/api/contact', apiLimiter, contactRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/resume', resumeRoutes);
 
 app.get('/api/guestbook', async (req, res) => {
   try {

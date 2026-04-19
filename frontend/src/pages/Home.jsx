@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import Navbar from '../components/Navbar'
 import Hero from '../components/Hero'
 import About from '../components/About'
@@ -24,6 +25,7 @@ const fadeInUp = {
 }
 
 export default function Home({ dark, toggleTheme }) {
+  const { t } = useTranslation()
   return (
     <div className="relative">
       {/* Refined Background gradient decoration */}
@@ -74,10 +76,13 @@ export default function Home({ dark, toggleTheme }) {
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
             <a href="#contact" className="w-full sm:w-auto px-10 py-3.5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-full shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 transition-all">
-              Hire Me 🚀
+              {t('btn_hire_me')} 🚀
             </a>
-            <a href="/resume.pdf" download className="w-full sm:w-auto px-10 py-3.5 border border-gray-300 dark:border-white/20 rounded-full hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-              Get Resume 📄
+            <a 
+              href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/resume/download`} 
+              className="w-full sm:w-auto px-10 py-3.5 border border-gray-300 dark:border-white/20 rounded-full hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+            >
+              {t('btn_get_resume')} 📄
             </a>
           </div>
         </motion.section>
