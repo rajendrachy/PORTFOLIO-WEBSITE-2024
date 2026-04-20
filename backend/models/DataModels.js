@@ -28,6 +28,7 @@ const noteSchema = new mongoose.Schema({
 const achievementSchema = new mongoose.Schema({
   title: { type: String, required: true },
   desc: { type: String },
+  provider: { type: String },
   pdfLink: { type: String },
   image: { type: String },
 }, { timestamps: true });

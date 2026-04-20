@@ -210,13 +210,14 @@ export default function AdminDashboard() {
     const items = data[activeTab] || []
 
     if (items.length === 0) return (
-      <div className="text-center py-20 glass rounded-[3rem]">
+      <div className="text-center py-20 glass rounded-[3rem] border border-slate-200 dark:border-white/5">
         <p className="text-slate-700 dark:text-slate-400 font-Ovo tracking-wide">No records found in {activeTab}.</p>
+        <p className="text-[10px] uppercase tracking-widest text-slate-400 mt-2 font-bold">You are currently seeing fallback data on the public site.</p>
       </div>
     )
 
     if (activeTab === 'stats') {
-      // Mock data for beautiful visualization (in a real app, this would be aggregated from DB)
+      // Mock data for beautiful visualization
       const chartData = [
         { name: 'Day 1', Inquiries: 1, Visitors: 40 },
         { name: 'Day 2', Inquiries: 2, Visitors: 30 },
@@ -338,7 +339,16 @@ export default function AdminDashboard() {
                 </div>
               </div>
               <h3 className="text-xl font-bold dark:text-white mb-3 tracking-tight">{item.title || item.label || item.name}</h3>
-              {item.tech && <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-2">{item.tech}</p>}
+              
+              {/* Detailed Context based on tab */}
+              <div className="space-y-1 mb-4">
+                {item.fullTitle && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{item.fullTitle}</p>}
+                {item.provider && <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest">{item.provider}</p>}
+                {item.org && <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest">{item.org} • {item.date}</p>}
+                {item.tech && <p className="text-[10px] font-bold text-cyan-500 uppercase tracking-widest">{item.tech}</p>}
+                {item.cat && <p className="text-[10px] font-bold text-purple-500 uppercase tracking-widest">{item.cat}</p>}
+              </div>
+
               {activeTab === 'guestbooks' && (
                 <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${item.approved ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400'}`}>
                   {item.approved ? 'Approved' : 'Pending Review'}
@@ -348,9 +358,9 @@ export default function AdminDashboard() {
                 {item.description || item.desc || item.message}
               </p>
             </div>
-            {item.link || item.pdfLink || item.url ? (
+            {item.link || item.pdfLink || item.url || item.image ? (
               <div className="pt-6 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
-                <a href={item.link || item.pdfLink || item.url} target="_blank" className="text-[10px] font-bold uppercase text-slate-600 dark:text-slate-400 hover:text-blue-600 flex items-center gap-2 transition-colors">
+                <a href={item.link || item.pdfLink || item.url || item.image} target="_blank" className="text-[10px] font-bold uppercase text-slate-600 dark:text-slate-400 hover:text-blue-600 flex items-center gap-2 transition-colors">
                   <ExternalLink size={14} /> Open Resource
                 </a>
               </div>
@@ -518,43 +528,136 @@ export default function AdminDashboard() {
             >
               <h2 className="text-3xl font-black dark:text-white uppercase tracking-tighter mb-10">{editId ? 'Update' : 'Construct'} {activeTab.slice(0, -1)}</h2>
               <form onSubmit={handleSubmit} className="space-y-8">
-                {/* Dynamic Form Generation based on tab */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Primary Name/Title Field */}
                   <div className="space-y-2 col-span-2">
-                    <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Primary Title / Label</label>
+                    <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">
+                      {activeTab === 'skills' ? 'Skill Name' : (activeTab === 'guestbooks' ? 'Your Name' : 'Primary Title')}
+                    </label>
                     <input
                       className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20 border-transparent focus:border-blue-600/30 font-bold transition-all"
-                      value={form.title || form.label || form.name || ''}
-                      onChange={e => setForm({ ...form, [activeTab === 'stats' ? 'label' : (activeTab === 'messages' ? 'name' : (activeTab === 'skills' || activeTab === 'guestbooks' ? 'name' : 'title'))]: e.target.value })}
+                      value={form.title || form.name || form.label || ''}
+                      onChange={e => setForm({ ...form, [activeTab === 'skills' || activeTab === 'guestbooks' || activeTab === 'messages' ? 'name' : (activeTab === 'stats' ? 'label' : 'title')]: e.target.value })}
                       required
                     />
                   </div>
+
+                  {/* Secondary Context Fields */}
+                  {activeTab === 'notes' && (
+                    <div className="space-y-2 col-span-2">
+                      <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Full Academic Title</label>
+                      <input className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" value={form.fullTitle || ''} onChange={e => setForm({ ...form, fullTitle: e.target.value })} />
+                    </div>
+                  )}
+
+                  {activeTab === 'achievements' && (
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Provider / Organization</label>
+                      <input className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" value={form.provider || ''} onChange={e => setForm({ ...form, provider: e.target.value })} />
+                    </div>
+                  )}
+
                   {activeTab === 'projects' && (
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Tech Stack</label>
+                      <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Tech Stack (comma separated)</label>
                       <input className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" value={form.tech || ''} onChange={e => setForm({ ...form, tech: e.target.value })} />
                     </div>
                   )}
+
+                  {activeTab === 'journeys' && (
+                    <>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Organization</label>
+                        <input className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" value={form.org || ''} onChange={e => setForm({ ...form, org: e.target.value })} />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Duration / Date</label>
+                        <input className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" value={form.date || ''} onChange={e => setForm({ ...form, date: e.target.value })} />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Type</label>
+                        <select className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" value={form.type || 'experience'} onChange={e => setForm({ ...form, type: e.target.value })}>
+                          <option value="experience">Experience</option>
+                          <option value="education">Education</option>
+                        </select>
+                      </div>
+                    </>
+                  )}
+
                   {activeTab === 'stats' && (
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Metric Value</label>
+                      <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Metric Value (e.g. 10+)</label>
                       <input className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" value={form.number || ''} onChange={e => setForm({ ...form, number: e.target.value })} />
                     </div>
                   )}
-                  <div className="space-y-2 col-span-2 md:col-span-1">
-                    <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Direct Resource Link (URL)</label>
-                    <input className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" value={form.link || form.pdfLink || ''} onChange={e => setForm({ ...form, [activeTab === 'achievements' ? 'pdfLink' : 'link']: e.target.value })} />
-                  </div>
+
+                  {activeTab === 'services' && (
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Accent Color (Tailwind class)</label>
+                      <input className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" value={form.color || ''} onChange={e => setForm({ ...form, color: e.target.value })} />
+                    </div>
+                  )}
+
+                  {activeTab === 'skills' && (
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Category</label>
+                      <input className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" value={form.cat || ''} onChange={e => setForm({ ...form, cat: e.target.value })} />
+                    </div>
+                  )}
+
+                  {activeTab === 'blogs' && (
+                    <>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Read Time (e.g. 5 min)</label>
+                        <input className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" value={form.readTime || ''} onChange={e => setForm({ ...form, readTime: e.target.value })} />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">Tags (comma separated)</label>
+                        <input className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" value={form.tags || ''} onChange={e => setForm({ ...form, tags: e.target.value })} />
+                      </div>
+                    </>
+                  )}
+
+                  {/* Specific Image/Icon Field */}
+                  {(activeTab === 'projects' || activeTab === 'blogs' || activeTab === 'achievements' || activeTab === 'services' || activeTab === 'skills') && (
+                    <div className="space-y-2 col-span-2 md:col-span-1">
+                      <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">
+                        {activeTab === 'services' || activeTab === 'skills' ? 'Icon / Logo URL' : 'Featured Image URL'}
+                      </label>
+                      <input 
+                        className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" 
+                        value={form.image || form.icon || ''} 
+                        onChange={e => setForm({ ...form, [activeTab === 'services' || activeTab === 'skills' ? 'icon' : 'image']: e.target.value })} 
+                      />
+                    </div>
+                  )}
+
+                  {/* Specific Link Field */}
+                  {(activeTab === 'projects' || activeTab === 'stats' || activeTab === 'notes' || activeTab === 'achievements') && (
+                    <div className="space-y-2 col-span-2 md:col-span-1">
+                      <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">
+                        {activeTab === 'achievements' ? 'PDF Credential URL' : 'External Resource Link'}
+                      </label>
+                      <input 
+                        className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20" 
+                        value={form.link || form.pdfLink || ''} 
+                        onChange={e => setForm({ ...form, [activeTab === 'achievements' ? 'pdfLink' : 'link']: e.target.value })} 
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-slate-700 dark:text-slate-400 uppercase tracking-widest ml-4">
-                    {activeTab === 'messages' || activeTab === 'guestbooks' ? 'Message Content' : 'Technical Overview / Description'}
+                    {activeTab === 'messages' || activeTab === 'guestbooks' ? 'Message Content' : 'Description / Detailed Overview'}
                   </label>
                   <textarea
                     className="w-full px-8 py-5 rounded-3xl bg-slate-100 dark:bg-white/5 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/20 min-h-[150px] font-Ovo"
                     value={form.description || form.desc || form.message || ''}
-                    onChange={e => setForm({ ...form, [(activeTab === 'notes' || activeTab === 'achievements') ? 'desc' : (activeTab === 'messages' || activeTab === 'guestbooks') ? 'message' : 'description']: e.target.value })}
+                    onChange={e => setForm({ 
+                      ...form, 
+                      [(activeTab === 'projects' || activeTab === 'stats') ? 'description' : (activeTab === 'messages' || activeTab === 'guestbooks' ? 'message' : 'desc')]: e.target.value 
+                    })}
                     required
                   />
                 </div>
