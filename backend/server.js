@@ -21,7 +21,8 @@ const io = new Server(server, {
       "http://localhost:5173",
       "http://localhost:5174",
       "https://portfolio-website-2024-zeta.vercel.app",
-      "https://rajendrachaudhary32.com.np"
+      "https://rajendrachaudhary32.com.np",
+      "https://www.rajendrachaudhary32.com.np"
     ],
     methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"]
   }
@@ -44,7 +45,8 @@ app.use(cors({
     "http://localhost:5173",
     "http://localhost:5174",
     "https://portfolio-website-2024-zeta.vercel.app",
-    "https://rajendrachaudhary32.com.np"
+    "https://rajendrachaudhary32.com.np",
+    "https://www.rajendrachaudhary32.com.np"
   ],
   methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
