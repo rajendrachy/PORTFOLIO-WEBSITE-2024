@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import User from './models/User.js';
-import { Project, Stat } from './models/DataModels.js';
+import { Project, Stat, Note, Achievement, Service, Skill } from './models/DataModels.js';
 
 dotenv.config();
 
@@ -27,7 +27,7 @@ const seedData = async () => {
       console.log('ℹ️ Admin user already exists.');
     }
 
-    // 2. Initial Projects migration
+    // 2. Initial Projects
     const projectCount = await Project.countDocuments();
     if (projectCount === 0) {
       await Project.create([
@@ -47,7 +47,7 @@ const seedData = async () => {
       console.log('✅ Initial projects seeded.');
     }
 
-    // 3. Initial Stats migration
+    // 3. Initial Stats
     const statCount = await Stat.countDocuments();
     if (statCount === 0) {
       await Stat.create([
@@ -57,6 +57,58 @@ const seedData = async () => {
         { number: '130+', label: 'Problems Solved', color: 'text-green-500' },
       ]);
       console.log('✅ Initial stats seeded.');
+    }
+
+    // 4. Initial Notes
+    const noteCount = await Note.countDocuments();
+    if (noteCount === 0) {
+      await Note.create([
+        {
+          title: 'DBMS',
+          fullTitle: 'Database Management Systems',
+          desc: 'Normalisation, SQL, Transactions, Indexing, and Architecture.',
+          link: 'https://drive.google.com/drive/folders/1Hn4OHvxm87ChwT8Tc5WN9zC59y5mQpoO?usp=drive_link',
+          color: 'border-blue-500/20'
+        },
+        {
+          title: 'OOPS',
+          fullTitle: 'Object Oriented Programming',
+          desc: 'Inheritance, Polymorphism, Abstraction, and Encapsulation with examples.',
+          link: 'https://drive.google.com/drive/folders/14yjanLg_bU-KmocNjgDMQu_GAOHRMl43?usp=drive_link',
+          color: 'border-blue-500/20'
+        }
+      ]);
+      console.log('✅ Initial notes seeded.');
+    }
+
+    // 5. Initial Achievements
+    const achievementCount = await Achievement.countDocuments();
+    if (achievementCount === 0) {
+      await Achievement.create([
+        {
+          title: 'Nutanix Cloud Certification',
+          desc: 'Awarded for proficiency in Nutanix Cloud Platform fundamentals.',
+          pdfLink: '/assets/Nutanix_Certificate.pdf',
+          provider: 'Nutanix'
+        },
+        {
+          title: 'Artificial Intelligence',
+          desc: 'Comprehensive certification covering AI models and neural networks.',
+          pdfLink: '/assets/AI Certificate.pdf',
+          provider: 'Coursera/IBM'
+        }
+      ]);
+      console.log('✅ Initial achievements seeded.');
+    }
+
+    // 6. Initial Services
+    const serviceCount = await Service.countDocuments();
+    if (serviceCount === 0) {
+      await Service.create([
+        { title: 'Web Development', desc: 'Building modern, responsive web apps.', color: 'blue' },
+        { title: 'UI/UX Design', desc: 'Creating intuitive user experiences.', color: 'purple' }
+      ]);
+      console.log('✅ Initial services seeded.');
     }
 
     console.log('🚀 Seeding complete! Closing connection.');
