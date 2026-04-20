@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Pause, Volume2, VolumeX, Music, SkipForward, SkipBack } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Music, SkipForward, SkipBack, X } from 'lucide-react';
 
 // ✅ Direct CDN audio URLs (not /download/ redirect links)
 const PLAYLIST = [
@@ -41,6 +41,7 @@ export default function AudioPlayer() {
   const [isMuted, setIsMuted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [titleKey, setTitleKey] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
 
   const audioRef = useRef(null);
   // Use a ref to track isPlaying inside effects without stale closures
@@ -118,123 +119,159 @@ export default function AudioPlayer() {
   const stopDrag = (e) => e.stopPropagation();
 
   return (
-    <motion.div
-      drag
-      dragMomentum={false}
-      dragElastic={0.08}
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 1, duration: 0.8 }}
-      whileDrag={{ scale: 1.05, boxShadow: '0 28px 56px rgba(0,0,0,0.4)' }}
-      className="fixed bottom-6 left-6 z-[100] flex items-center gap-2 px-3 py-3 glass rounded-full shadow-2xl border border-white/20 dark:border-white/10 select-none"
-      style={{ touchAction: 'none', cursor: 'grab' }}
-    >
-      {/* Audio element */}
-      <audio ref={audioRef} onEnded={handleEnded} preload="auto" />
+    <AnimatePresence>
+      {isVisible ? (
+        <motion.div
+          key="audio-player"
+          drag
+          dragMomentum={false}
+          dragElastic={0.08}
+          initial={{ y: 100, opacity: 0, scale: 0.9 }}
+          animate={{ y: 0, opacity: 1, scale: 1 }}
+          exit={{ y: 100, opacity: 0, scale: 0.8, transition: { duration: 0.3 } }}
+          transition={{ delay: 1, duration: 0.8 }}
+          whileDrag={{ scale: 1.05, boxShadow: '0 28px 56px rgba(0,0,0,0.4)' }}
+          className="fixed bottom-6 left-6 z-[100] flex items-center gap-2 px-3 py-3 glass rounded-full shadow-2xl border border-white/20 dark:border-white/10 select-none"
+          style={{ touchAction: 'none', cursor: 'grab' }}
+        >
+          {/* Audio element */}
+          <audio ref={audioRef} onEnded={handleEnded} preload="auto" />
 
-      {/* ⠿ Drag handle — 3×2 dot grid */}
-      <div
-        className="flex flex-col gap-[3px] px-0.5 flex-shrink-0 text-slate-400 dark:text-slate-500 hover:text-blue-400 dark:hover:text-blue-400 transition-colors"
-        title="Drag to move"
-        style={{ cursor: 'grab' }}
-      >
-        {[0, 1, 2].map(row => (
-          <div key={row} className="flex gap-[3px]">
-            <div className="w-[3px] h-[3px] rounded-full bg-current" />
-            <div className="w-[3px] h-[3px] rounded-full bg-current" />
+          {/* ⠿ Drag handle — 3×2 dot grid */}
+          <div
+            className="flex flex-col gap-[3px] px-0.5 flex-shrink-0 text-slate-400 dark:text-slate-500 hover:text-blue-400 dark:hover:text-blue-400 transition-colors"
+            title="Drag to move"
+            style={{ cursor: 'grab' }}
+          >
+            {[0, 1, 2].map(row => (
+              <div key={row} className="flex gap-[3px]">
+                <div className="w-[3px] h-[3px] rounded-full bg-current" />
+                <div className="w-[3px] h-[3px] rounded-full bg-current" />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      {/* ⏮ Prev */}
-      <button
-        onPointerDown={stopDrag}
-        onClick={playPrev}
-        title="Previous song"
-        className="w-8 h-8 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 flex items-center justify-center transition-colors rounded-full"
-        style={{ cursor: 'pointer' }}
-      >
-        <SkipBack size={16} fill="currentColor" />
-      </button>
+          {/* ⏮ Prev */}
+          <button
+            onPointerDown={stopDrag}
+            onClick={playPrev}
+            title="Previous song"
+            className="w-8 h-8 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 flex items-center justify-center transition-colors rounded-full"
+            style={{ cursor: 'pointer' }}
+          >
+            <SkipBack size={16} fill="currentColor" />
+          </button>
 
-      {/* ▶ / ⏸ Play / Pause */}
-      <button
-        onPointerDown={stopDrag}
-        onClick={togglePlay}
-        title={isPlaying ? 'Pause' : 'Play'}
-        className="w-11 h-11 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center transition-all shadow-lg shadow-blue-500/30 flex-shrink-0"
-        style={{ cursor: 'pointer' }}
-      >
-        {isPlaying
-          ? <Pause size={18} fill="currentColor" />
-          : <Play size={18} className="ml-0.5" fill="currentColor" />}
-      </button>
+          {/* ▶ / ⏸ Play / Pause */}
+          <button
+            onPointerDown={stopDrag}
+            onClick={togglePlay}
+            title={isPlaying ? 'Pause' : 'Play'}
+            className="w-11 h-11 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center transition-all shadow-lg shadow-blue-500/30 flex-shrink-0"
+            style={{ cursor: 'pointer' }}
+          >
+            {isPlaying
+              ? <Pause size={18} fill="currentColor" />
+              : <Play size={18} className="ml-0.5" fill="currentColor" />}
+          </button>
 
-      {/* ⏭ Next */}
-      <button
-        onPointerDown={stopDrag}
-        onClick={playNext}
-        title="Next song"
-        className="w-8 h-8 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 flex items-center justify-center transition-colors rounded-full"
-        style={{ cursor: 'pointer' }}
-      >
-        <SkipForward size={16} fill="currentColor" />
-      </button>
+          {/* ⏭ Next */}
+          <button
+            onPointerDown={stopDrag}
+            onClick={playNext}
+            title="Next song"
+            className="w-8 h-8 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 flex items-center justify-center transition-colors rounded-full"
+            style={{ cursor: 'pointer' }}
+          >
+            <SkipForward size={16} fill="currentColor" />
+          </button>
 
-      {/* Song Info + Visualizer */}
-      <div className="flex flex-col pr-1 min-w-0" style={{ maxWidth: '130px' }}>
-        <div className="flex items-center gap-1.5 overflow-hidden">
-          <Music size={11} className="text-blue-500 dark:text-blue-400 flex-shrink-0" />
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={titleKey}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.25 }}
-              className="text-[10px] font-bold uppercase tracking-widest text-slate-800 dark:text-white truncate"
-            >
-              {currentSong.title}
-            </motion.span>
-          </AnimatePresence>
-        </div>
+          {/* Song Info + Visualizer */}
+          <div className="flex flex-col pr-1 min-w-0" style={{ maxWidth: '130px' }}>
+            <div className="flex items-center gap-1.5 overflow-hidden">
+              <Music size={11} className="text-blue-500 dark:text-blue-400 flex-shrink-0" />
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={titleKey}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.25 }}
+                  className="text-[10px] font-bold uppercase tracking-widest text-slate-800 dark:text-white truncate"
+                >
+                  {currentSong.title}
+                </motion.span>
+              </AnimatePresence>
+            </div>
 
-        {/* Track counter */}
-        <span className="text-[9px] text-slate-400 dark:text-slate-500 pl-[19px] mb-0.5">
-          {currentIndex + 1} / {PLAYLIST.length}
-        </span>
+            {/* Track counter */}
+            <span className="text-[9px] text-slate-400 dark:text-slate-500 pl-[19px] mb-0.5">
+              {currentIndex + 1} / {PLAYLIST.length}
+            </span>
 
-        {/* Animated Equalizer */}
-        <div className="flex items-end gap-[2px] h-3 pl-[19px]">
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={i}
-              animate={isPlaying
-                ? { height: ['20%', '100%', '40%', '80%', '20%'] }
-                : { height: '20%' }}
-              transition={{
-                duration: 1.2,
-                repeat: Infinity,
-                delay: i * 0.12,
-                ease: 'easeInOut',
-              }}
-              className="w-1 bg-blue-400 dark:bg-blue-500 rounded-t-sm"
-              style={{ minHeight: '3px' }}
-            />
-          ))}
-        </div>
-      </div>
+            {/* Animated Equalizer */}
+            <div className="flex items-end gap-[2px] h-3 pl-[19px]">
+              {[...Array(6)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  animate={isPlaying
+                    ? { height: ['20%', '100%', '40%', '80%', '20%'] }
+                    : { height: '20%' }}
+                  transition={{
+                    duration: 1.2,
+                    repeat: Infinity,
+                    delay: i * 0.12,
+                    ease: 'easeInOut',
+                  }}
+                  className="w-1 bg-blue-400 dark:bg-blue-500 rounded-t-sm"
+                  style={{ minHeight: '3px' }}
+                />
+              ))}
+            </div>
+          </div>
 
-      {/* 🔇 / 🔊 Mute */}
-      <button
-        onPointerDown={stopDrag}
-        onClick={toggleMute}
-        title={isMuted ? 'Unmute' : 'Mute'}
-        className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors flex-shrink-0"
-        style={{ cursor: 'pointer' }}
-      >
-        {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
-      </button>
-    </motion.div>
+          {/* 🔇 / 🔊 Mute */}
+          <button
+            onPointerDown={stopDrag}
+            onClick={toggleMute}
+            title={isMuted ? 'Unmute' : 'Mute'}
+            className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors flex-shrink-0"
+            style={{ cursor: 'pointer' }}
+          >
+            {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+          </button>
+
+          {/* ✖ Cut (Close) */}
+          <div className="w-px h-6 bg-white/10 dark:bg-white/5 mx-1" />
+          <button
+            onPointerDown={stopDrag}
+            onClick={() => setIsVisible(false)}
+            title="Minimize Player"
+            className="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-all rounded-full"
+            style={{ cursor: 'pointer' }}
+          >
+            <X size={16} />
+          </button>
+        </motion.div>
+      ) : (
+        <motion.button
+          key="audio-trigger"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0, opacity: 0 }}
+          onClick={() => setIsVisible(true)}
+          title="Open Music Player"
+          className="fixed bottom-6 left-6 z-[100] w-12 h-12 glass rounded-full flex items-center justify-center text-blue-500 shadow-xl border border-white/20 hover:scale-110 transition-transform active:scale-95"
+        >
+          <Music size={20} />
+          {isPlaying && (
+            <span className="absolute top-0 right-0 flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+            </span>
+          )}
+        </motion.button>
+      )}
+    </AnimatePresence>
   );
 }
