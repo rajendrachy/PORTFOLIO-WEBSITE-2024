@@ -41,7 +41,7 @@ export default function AudioPlayer() {
   const [isMuted, setIsMuted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [titleKey, setTitleKey] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   const audioRef = useRef(null);
   // Use a ref to track isPlaying inside effects without stale closures
@@ -129,7 +129,7 @@ export default function AudioPlayer() {
           initial={{ y: 100, opacity: 0, scale: 0.9 }}
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ y: 100, opacity: 0, scale: 0.8, transition: { duration: 0.3 } }}
-          transition={{ delay: 1, duration: 0.8 }}
+          transition={{ duration: 0.5 }}
           whileDrag={{ scale: 1.05, boxShadow: '0 28px 56px rgba(0,0,0,0.4)' }}
           className="fixed bottom-6 left-6 z-[100] flex items-center gap-2 px-3 py-3 glass rounded-full shadow-2xl border border-white/20 dark:border-white/10 select-none"
           style={{ touchAction: 'none', cursor: 'grab' }}
