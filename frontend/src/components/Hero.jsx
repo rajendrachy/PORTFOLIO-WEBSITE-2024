@@ -92,7 +92,7 @@ export default function Hero() {
           <MapPin size={12} className="text-blue-500 flex-shrink-0" />
           <span>Currently in</span>
           <span className="font-bold text-slate-700 dark:text-slate-200">
-            Nepal.
+            Nepal NP.
           </span>
         </span>
 
